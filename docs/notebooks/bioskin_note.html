@@ -156,16 +156,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#bioskin-technical-note" id="toc-bioskin-technical-note" class="nav-link active" data-scroll-target="#bioskin-technical-note"><span class="header-section-number">1</span> BioSkin Technical Note</a>
+  <li><a href="#methodological-overview" id="toc-methodological-overview" class="nav-link active" data-scroll-target="#methodological-overview"><span class="header-section-number">1</span> Methodological Overview</a>
   <ul class="collapse">
-  <li><a href="#methodological-overview" id="toc-methodological-overview" class="nav-link" data-scroll-target="#methodological-overview"><span class="header-section-number">1.1</span> Methodological Overview</a>
+  <li><a href="#forward-process" id="toc-forward-process" class="nav-link" data-scroll-target="#forward-process"><span class="header-section-number">1.1</span> Forward Process</a>
   <ul class="collapse">
-  <li><a href="#forward-process" id="toc-forward-process" class="nav-link" data-scroll-target="#forward-process"><span class="header-section-number">1.1.1</span> Forward Process</a></li>
-  <li><a href="#inverse-process" id="toc-inverse-process" class="nav-link" data-scroll-target="#inverse-process"><span class="header-section-number">1.1.2</span> Inverse Process</a></li>
-  <li><a href="#compact-summary" id="toc-compact-summary" class="nav-link" data-scroll-target="#compact-summary"><span class="header-section-number">1.1.3</span> Compact Summary</a></li>
+  <li><a href="#notes" id="toc-notes" class="nav-link" data-scroll-target="#notes"><span class="header-section-number">1.1.1</span> Notes</a></li>
   </ul></li>
-  <li><a href="#spectral-reflectance-generation" id="toc-spectral-reflectance-generation" class="nav-link" data-scroll-target="#spectral-reflectance-generation"><span class="header-section-number">1.2</span> Spectral Reflectance Generation</a></li>
+  <li><a href="#inverse-process" id="toc-inverse-process" class="nav-link" data-scroll-target="#inverse-process"><span class="header-section-number">1.2</span> Inverse Process</a>
+  <ul class="collapse">
+  <li><a href="#notes-1" id="toc-notes-1" class="nav-link" data-scroll-target="#notes-1"><span class="header-section-number">1.2.1</span> Notes</a></li>
   </ul></li>
+  <li><a href="#compact-summary" id="toc-compact-summary" class="nav-link" data-scroll-target="#compact-summary"><span class="header-section-number">1.3</span> Compact Summary</a></li>
+  </ul></li>
+  <li><a href="#spectral-reflectance-generation" id="toc-spectral-reflectance-generation" class="nav-link" data-scroll-target="#spectral-reflectance-generation"><span class="header-section-number">2</span> Spectral Reflectance Generation</a></li>
   </ul>
 </nav>
     </div>
@@ -191,11 +194,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<section id="bioskin-technical-note" class="level1" data-number="1">
-<h1 data-number="1"><span class="header-section-number">1</span> BioSkin Technical Note</h1>
 <p>This notebook documents a compact BioSkin workflow for mapping biophysical skin parameters to visible and near-infrared spectral reflectance. The emphasis is on the forward decoder provided by BioSkin to generate spectral reflectance.</p>
-<section id="methodological-overview" class="level2" data-number="1.1">
-<h2 data-number="1.1" class="anchored" data-anchor-id="methodological-overview"><span class="header-section-number">1.1</span> Methodological Overview</h2>
+<section id="methodological-overview" class="level1" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> Methodological Overview</h1>
 <style>
 .flow-diagram {
   display: flex;
@@ -240,8 +241,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   .flow-arrow { text-align: center; padding: 0.1rem 0; }
 }
 </style>
-<section id="forward-process" class="level3" data-number="1.1.1">
-<h3 data-number="1.1.1" class="anchored" data-anchor-id="forward-process"><span class="header-section-number">1.1.1</span> Forward Process</h3>
+<section id="forward-process" class="level2" data-number="1.1">
+<h2 data-number="1.1" class="anchored" data-anchor-id="forward-process"><span class="header-section-number">1.1</span> Forward Process</h2>
 <p>The full forward process starts from biophysical skin parameters, estimates spectral reflectance with a human skin model, and renders the spectrum into a color representation.</p>
 <div class="flow-diagram" aria-label="Forward BioSkin process">
 <div class="flow-node">
@@ -266,8 +267,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <strong>Color representation</strong><span>RGB / CIE LAB</span>
 </div>
 </div>
-<section id="notes" class="level4" data-number="1.1.1.1">
-<h4 data-number="1.1.1.1" class="anchored" data-anchor-id="notes"><span class="header-section-number">1.1.1.1</span> Notes</h4>
+<section id="notes" class="level3" data-number="1.1.1">
+<h3 data-number="1.1.1" class="anchored" data-anchor-id="notes"><span class="header-section-number">1.1.1</span> Notes</h3>
 <ul>
 <li><strong>Skin parameters:</strong> melanin volume fraction, blood volume fraction, thickness, hemoglobin oxygenation, and melanin type ratio.</li>
 <li><strong>Human skin model:</strong> brute-force Monte Carlo random walks inside the skin.</li>
@@ -275,8 +276,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
 </section>
 </section>
-<section id="inverse-process" class="level3" data-number="1.1.2">
-<h3 data-number="1.1.2" class="anchored" data-anchor-id="inverse-process"><span class="header-section-number">1.1.2</span> Inverse Process</h3>
+<section id="inverse-process" class="level2" data-number="1.2">
+<h2 data-number="1.2" class="anchored" data-anchor-id="inverse-process"><span class="header-section-number">1.2</span> Inverse Process</h2>
 <p>The inverse process maps an observed color back to latent skin parameters. BioSkin implements this as an encoder-decoder cycle in which the encoder estimates parameters from RGB and the decoder generates the spectral reflectance from skin parameters.</p>
 <div class="flow-diagram" aria-label="BioSkin encoder-decoder cycle">
 <div class="flow-node">
@@ -304,8 +305,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="flow-loop">
 The encoder-decoder cycle compares the reconstructed RGB with the observed RGB while retaining the decoded reflectance spectrum.
 </div>
-<section id="notes-1" class="level4" data-number="1.1.2.1">
-<h4 data-number="1.1.2.1" class="anchored" data-anchor-id="notes-1"><span class="header-section-number">1.1.2.1</span> Notes</h4>
+<section id="notes-1" class="level3" data-number="1.2.1">
+<h3 data-number="1.2.1" class="anchored" data-anchor-id="notes-1"><span class="header-section-number">1.2.1</span> Notes</h3>
 <ul>
 <li><strong>Decoder:</strong> maps skin parameters to spectral reflectance, approximating the Monte Carlo simulation.</li>
 <li><strong>Renderer:</strong> converts spectral reflectance into RGB.</li>
@@ -314,8 +315,8 @@ The encoder-decoder cycle compares the reconstructed RGB with the observed RGB w
 </ul>
 </section>
 </section>
-<section id="compact-summary" class="level3" data-number="1.1.3">
-<h3 data-number="1.1.3" class="anchored" data-anchor-id="compact-summary"><span class="header-section-number">1.1.3</span> Compact Summary</h3>
+<section id="compact-summary" class="level2" data-number="1.3">
+<h2 data-number="1.3" class="anchored" data-anchor-id="compact-summary"><span class="header-section-number">1.3</span> Compact Summary</h2>
 <pre class="text"><code>Forward:
 Biophysical skin parameters
     -&gt; human skin model / brute-force Monte Carlo
@@ -332,8 +333,8 @@ RGB
     -&gt; RGB</code></pre>
 </section>
 </section>
-<section id="spectral-reflectance-generation" class="level2" data-number="1.2">
-<h2 data-number="1.2" class="anchored" data-anchor-id="spectral-reflectance-generation"><span class="header-section-number">1.2</span> Spectral Reflectance Generation</h2>
+<section id="spectral-reflectance-generation" class="level1" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> Spectral Reflectance Generation</h1>
 <p>The following cell records the BioSkin parameter names and their reported ranges. The regular range excludes localized effects such as rashes or spots, while the plausible and full ranges provide broader limits for parameter exploration.</p>
 <div id="110b4c78" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
@@ -566,7 +567,6 @@ Device: cpu</code></pre>
 <p>The figure reports the decoded reflectance for four illustrative skin-parameter vectors. The left panel shows the visible and near-infrared spectra together, with dashed lines marking the near-infrared portions and the vertical line marking the 780 nm transition. The middle and right panels separate the two wavelength ranges to make local spectral structure easier to inspect.</p>
 
 
-</section>
 </section>
 
 </main> <!-- /main -->
