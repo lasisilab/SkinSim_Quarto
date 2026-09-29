@@ -43,6 +43,22 @@ quarto preview
 
 ## Render website
 
+Published site: <https://lasisilab.github.io/SkinSim_Quarto/>
+
+- [BioSkin validation](https://lasisilab.github.io/SkinSim_Quarto/analysis/bioskin_validation.html)
+- [BVCM notebook](https://lasisilab.github.io/SkinSim_Quarto/notebooks/bvcm.html)
+- [Rerun report](https://lasisilab.github.io/SkinSim_Quarto/analysis/rerun_report.html)
+
+To publish already-executed notebook outputs without refitting the model,
+render with `quarto render --no-execute --no-clean`. For partial updates,
+pass the changed notebook or `.qmd` path to that command. Commit the updated
+sources and `docs/` output; GitHub Pages serves the generated HTML.
+
+Regenerate the standalone report with
+`python code/export_rerun_report.py` (HTML only). Word output requires an
+explicit `--docx` flag. The raw ISSA workbook, local environments, temporary
+files, and model checkpoints in `data/` are excluded from Git.
+
 Build the full site to `docs/`:
 
 ```bash

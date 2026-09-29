@@ -13,6 +13,12 @@ The project will utilize datasets that include measurements of skin reflectance 
 
 ## Statistical analyses
 
+The [BioSkin validation results](analysis/bioskin_validation.qmd) summarize
+the analysis of 4,000 generated spectra: 1,167 pass MI–EI screening and
+733 (18.325%) pass both validation stages. See the
+[executed BVCM notebook](notebooks/bvcm.ipynb) for the full analysis and the
+[rerun report](analysis/rerun_report.qmd) for the paired comparison and audit.
+
 The project will perform various statistical analyses to explore the properties of skin reflectance. These analyses include:
 
 - Descriptive statistics to summarize the reflectance data.

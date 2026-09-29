@@ -17,3 +17,5 @@ This section contains statistical analysis reports as followings:
 
 4. Bayesian varying coefficient models:
     - [Bayesian Varying Coefficient Models for Skin Reflectance](../notebooks/bvcm.ipynb)
+    - [BioSkin validation results and publication figures](bioskin_validation.qmd)
+    - [Validation rerun report and parameter-pairing audit](rerun_report.qmd)

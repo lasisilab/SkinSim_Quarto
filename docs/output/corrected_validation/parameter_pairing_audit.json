@@ -1,0 +1,75 @@
+{
+  "row_count": 4000,
+  "zero_based_previous_column_permutation": [
+    0,
+    1,
+    2,
+    4,
+    3,
+    5
+  ],
+  "zero_based_swapped_slots": [
+    3,
+    4
+  ],
+  "one_based_swapped_columns": [
+    4,
+    5
+  ],
+  "row_pairs_verified_by_unique_exact_slot_values": 4000,
+  "row_pairs_verified_by_nearest_full_parameter_vector": 4000,
+  "rows_exactly_equal_in_all_six_columns_after_swap": 1044,
+  "rows_matching_with_network_absolute_tolerance_2e_7": 4000,
+  "max_absolute_difference_per_network_column_exact_decimal": [
+    "6E-8",
+    "6E-8",
+    "1.2E-7",
+    "0E-8",
+    "0E-8",
+    "0E-8"
+  ],
+  "max_absolute_difference_per_physical_parameter": {
+    "Melanin": 1.9606742562849888e-08,
+    "Haemoglobin": 1.1950805955951438e-08,
+    "Thickness_cm": 5.913806472301886e-09,
+    "BloodOxygenation": 3.456951169766853e-08,
+    "MelaninTypeRatio": 3.46892422564693e-08
+  },
+  "rows_matching_physical_parameters_with_absolute_tolerance_1e_7": 4000,
+  "max_distance_to_matching_parameter_vector": 1.200000000478596e-07,
+  "min_distance_to_second_closest_parameter_vector": 0.006690451884738446,
+  "first_previous_row": [
+    0.69314891,
+    0.61548281,
+    0.44665959,
+    0.96607614,
+    0.72770983,
+    1.0
+  ],
+  "first_corrected_row": [
+    0.69314891,
+    0.61548281,
+    0.44665959,
+    0.72770983,
+    0.96607614,
+    1.0
+  ],
+  "files": {
+    "previous_network": {
+      "path": "new_sample_dataset_package\\new_sample_skin_props_network_ready.csv",
+      "sha256": "b2bd454c9faf7b104c65eb01670b195e929eccd2e79fa70667881114ff5ba710"
+    },
+    "corrected_network": {
+      "path": "bioskin_data\\corrected_skin_props_network_ready.csv",
+      "sha256": "335b135e325440be07b33b11d44d6051b371ab6bb5e85231d3b99c52589153b8"
+    },
+    "previous_physical": {
+      "path": "new_sample_dataset_package\\new_sample_skin_props_raw_physical_units.csv",
+      "sha256": "4977c82dad32ab6186c4ff57618524f568a32af19f86e3c723d1b364ba9ca3b1"
+    },
+    "corrected_physical": {
+      "path": "bioskin_data\\corrected_skin_props_raw_physical_units.csv",
+      "sha256": "a3f78ba64a66f32ed56e3f0c1ab882f3aacecf53b6eeaa9a78e25a44c364d5fc"
+    }
+  }
+}

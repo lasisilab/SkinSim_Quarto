@@ -1,0 +1,3 @@
+dataset,n,passed_stage1,rejected_stage1,rejected_stage2,passed_both,passed_both_percent,retained_MI_min,retained_MI_max,retained_EI_min,retained_EI_max
+Previous (swapped slots),4000,879,3121,145,734,18.35,19.885656730061974,96.0882214364392,17.088946399664568,49.53298105367448
+Corrected,4000,1167,2833,434,733,18.325,20.85223337812222,97.15049995211432,16.785632971077018,49.53371183930212

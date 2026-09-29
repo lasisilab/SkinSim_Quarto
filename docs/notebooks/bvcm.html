@@ -2,19 +2,25 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.8.26">
+<meta name="generator" content="quarto-1.10.18">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Junhui He">
-<meta name="dcterms.date" content="2026-07-23">
+<meta name="dcterms.date" content="2026-09-29">
 
 <title>Bayesian Varying Coefficient Model (BVCM) for Skin Reflectance Spectra – SkinSim</title>
 <style>
-code{white-space: pre-wrap;}
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
 span.smallcaps{font-variant: small-caps;}
-div.columns{display: flex; gap: min(4vw, 1.5em);}
-div.column{flex: auto; overflow-x: auto;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
@@ -34,15 +40,14 @@ ul.task-list li input[type="checkbox"] {
 <meta name="quarto:offset" content="../">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-5b4ad623e5705c0698d39aec6f10cf02.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-172ba59bd5e0b52282274ba0c0cc16fc.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -75,7 +80,7 @@ ul.task-list li input[type="checkbox"] {
 <script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
 
 <script type="text/javascript">
 const typesetMath = (el) => {
@@ -133,6 +138,10 @@ window.Quarto = {
 <span class="menu-text">Analysis</span></a>
   </li>  
   <li class="nav-item">
+    <a class="nav-link" href="../analysis/bioskin_validation.html"> 
+<span class="menu-text">BioSkin validation</span></a>
+  </li>  
+  <li class="nav-item">
     <a class="nav-link" href="../about.html"> 
 <span class="menu-text">About</span></a>
   </li>  
@@ -183,10 +192,11 @@ window.Quarto = {
   <li><a href="#synthetic-spectra-generation" id="toc-synthetic-spectra-generation" class="nav-link" data-scroll-target="#synthetic-spectra-generation"><span class="header-section-number">5</span> Synthetic spectra generation</a></li>
   <li><a href="#skin-reflectance-spectrum-filter" id="toc-skin-reflectance-spectrum-filter" class="nav-link" data-scroll-target="#skin-reflectance-spectrum-filter"><span class="header-section-number">6</span> Skin reflectance spectrum filter</a>
   <ul class="collapse">
-  <li><a href="#pca-comparison-of-issa-bvcm-predictions-and-meta-spectra" id="toc-pca-comparison-of-issa-bvcm-predictions-and-meta-spectra" class="nav-link" data-scroll-target="#pca-comparison-of-issa-bvcm-predictions-and-meta-spectra"><span class="header-section-number">6.1</span> PCA comparison of ISSA, BVCM predictions, and meta spectra</a></li>
+  <li><a href="#corrected-bioskin-inputs" id="toc-corrected-bioskin-inputs" class="nav-link" data-scroll-target="#corrected-bioskin-inputs"><span class="header-section-number">6.0.1</span> Corrected BioSkin inputs</a></li>
+  <li><a href="#pca-comparison-of-issa-bvcm-predictions-and-bioskin-spectra" id="toc-pca-comparison-of-issa-bvcm-predictions-and-bioskin-spectra" class="nav-link" data-scroll-target="#pca-comparison-of-issa-bvcm-predictions-and-bioskin-spectra"><span class="header-section-number">6.1</span> PCA comparison of ISSA, BVCM predictions, and BioSkin spectra</a></li>
   <li><a href="#stage-1-chromophore-index-validation" id="toc-stage-1-chromophore-index-validation" class="nav-link" data-scroll-target="#stage-1-chromophore-index-validation"><span class="header-section-number">6.2</span> Stage 1: Chromophore index validation</a></li>
   <li><a href="#stage-2-spectral-plausibility-assessment" id="toc-stage-2-spectral-plausibility-assessment" class="nav-link" data-scroll-target="#stage-2-spectral-plausibility-assessment"><span class="header-section-number">6.3</span> Stage 2: Spectral plausibility assessment</a></li>
-  <li><a href="#meta-spectra-validation-overview" id="toc-meta-spectra-validation-overview" class="nav-link" data-scroll-target="#meta-spectra-validation-overview"><span class="header-section-number">6.4</span> Meta spectra validation overview</a></li>
+  <li><a href="#bioskin-spectra-validation-overview" id="toc-bioskin-spectra-validation-overview" class="nav-link" data-scroll-target="#bioskin-spectra-validation-overview"><span class="header-section-number">6.4</span> BioSkin spectra validation overview</a></li>
   <li><a href="#validation-results-summary" id="toc-validation-results-summary" class="nav-link" data-scroll-target="#validation-results-summary"><span class="header-section-number">6.5</span> Validation results summary</a></li>
   </ul></li>
   </ul>
@@ -214,7 +224,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">July 23, 2026</p>
+      <p class="date">September 29, 2026</p>
     </div>
   </div>
   
@@ -276,7 +286,7 @@ window.Quarto = {
 <h1 data-number="2"><span class="header-section-number">2</span> Exploratory analysis on ISSA face sites</h1>
 <section id="skin-reflectance-and-its-first-derivative" class="level2" data-number="2.1">
 <h2 data-number="2.1" class="anchored" data-anchor-id="skin-reflectance-and-its-first-derivative"><span class="header-section-number">2.1</span> Skin reflectance and its first derivative</h2>
-<div id="10583150" class="cell" data-execution_count="4">
+<div id="10583150" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-09-29T12:44:05.487550Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-09-29T12:44:05.487550Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-09-29T12:44:13.895433Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-09-29T12:44:13.895433Z&quot;}}" data-execution_count="4">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -289,7 +299,7 @@ window.Quarto = {
 <section id="eumelanin-human-skin-colour-scale" class="level2" data-number="2.2">
 <h2 data-number="2.2" class="anchored" data-anchor-id="eumelanin-human-skin-colour-scale"><span class="header-section-number">2.2</span> Eumelanin human skin colour scale</h2>
 <p>ISSA Face Sites Eumelanin Class Summary Table:</p>
-<div id="19474621" class="cell" data-execution_count="5">
+<div id="19474621" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-09-29T12:44:13.905639Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-09-29T12:44:13.904631Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-09-29T12:44:13.935681Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-09-29T12:44:13.935681Z&quot;}}" data-execution_count="5">
 <div class="cell-output cell-output-display" data-execution_count="5">
 <div>
 
@@ -376,7 +386,7 @@ window.Quarto = {
 </div>
 </div>
 </div>
-<div id="0e469f5f" class="cell" data-execution_count="6">
+<div id="0e469f5f" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-09-29T12:44:13.937693Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-09-29T12:44:13.936686Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-09-29T12:44:26.872121Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-09-29T12:44:26.869093Z&quot;}}" data-execution_count="6">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -396,7 +406,7 @@ window.Quarto = {
 <section id="chromophore-distribution-modeling" class="level2" data-number="2.3">
 <h2 data-number="2.3" class="anchored" data-anchor-id="chromophore-distribution-modeling"><span class="header-section-number">2.3</span> Chromophore distribution modeling</h2>
 <p>The relationship between melanin index and erythema index is shown as:</p>
-<div id="fd5b6efd" class="cell" data-execution_count="7">
+<div id="fd5b6efd" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-09-29T12:44:26.899082Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-09-29T12:44:26.899082Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-09-29T12:44:28.998434Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-09-29T12:44:28.996414Z&quot;}}" data-execution_count="7">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -406,7 +416,7 @@ window.Quarto = {
 </div>
 </div>
 <p>We apply a Gaussian mixture model with 5 components to approximate the distribution of melanin and erythema indices in the population. This allows us to identify the realistic combinations of these chromophore indices.</p>
-<div id="4f853b86" class="cell" data-execution_count="9">
+<div id="4f853b86" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-09-29T12:44:32.652672Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-09-29T12:44:32.651675Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-09-29T12:44:37.227437Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-09-29T12:44:37.225032Z&quot;}}" data-execution_count="9">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -419,10 +429,11 @@ window.Quarto = {
 </section>
 <section id="posterior-inference" class="level1" data-number="3">
 <h1 data-number="3"><span class="header-section-number">3</span> Posterior inference</h1>
-<p>We perform posterior inference using a Hybrid Gibbs sampler. The model is fitted to the ISSA face skin reflectance spectra, melanin index, and erythema index data.</p>
+<p>We use the existing hybrid Gibbs model fitted to the ISSA facial spectra, with 10,000 tuning iterations and 10,000 subsequent iterations, retaining every tenth draw. A compatible checkpoint is reused when available. The downloaded <code>bvcm_issa_face_posterior.npz</code> contains 8,033 subject deviations and no labeled residual-covariance state, so it cannot supply the current model’s Stage 2 reference. The first run below fits the model on the current 6,338 training spectra and saves a complete compatible checkpoint.</p>
+<p>To reduce memory use, the mean subject-specific deviation is accumulated across the same retained draws. Coefficient and hyperparameter draws remain available for posterior summaries.</p>
 <section id="preprocess-data" class="level2" data-number="3.1">
 <h2 data-number="3.1" class="anchored" data-anchor-id="preprocess-data"><span class="header-section-number">3.1</span> Preprocess data</h2>
-<div id="637b739e" class="cell" data-execution_count="10">
+<div id="637b739e" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-09-29T12:44:37.264802Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-09-29T12:44:37.263788Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-09-29T12:44:59.985317Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-09-29T12:44:59.982301Z&quot;}}" data-execution_count="10">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -434,10 +445,32 @@ window.Quarto = {
 </section>
 <section id="gibbs-sampler" class="level2" data-number="3.2">
 <h2 data-number="3.2" class="anchored" data-anchor-id="gibbs-sampler"><span class="header-section-number">3.2</span> Gibbs sampler</h2>
-<div id="ffe6acc3" class="cell" data-execution_count="12">
+<div id="ffe6acc3" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-09-29T12:45:00.029053Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-09-29T12:45:00.028060Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-09-29T12:47:44.891316Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-09-29T12:47:44.891316Z&quot;}}" data-execution_count="12">
 <div class="cell-output cell-output-stdout">
 <pre><code>Starting Gibbs Sampler for 10000 draws and 10000 tune steps...
-Hyperparameter Acceptance Rate: 15.88%</code></pre>
+Tuning: 1000/10000
+Tuning: 2000/10000
+Tuning: 3000/10000
+Tuning: 4000/10000
+Tuning: 5000/10000
+Tuning: 6000/10000
+Tuning: 7000/10000
+Tuning: 8000/10000
+Tuning: 9000/10000
+Tuning: 10000/10000
+Sampling: 1000/10000
+Sampling: 2000/10000
+Sampling: 3000/10000
+Sampling: 4000/10000
+Sampling: 5000/10000
+Sampling: 6000/10000
+Sampling: 7000/10000
+Sampling: 8000/10000
+Sampling: 9000/10000
+Sampling: 10000/10000
+Hyperparameter Acceptance Rate: 15.88%
+Saved Gibbs checkpoint: bvcm_gibbs_validation_checkpoint.npz
+Posterior means: length scale=45.844508, amplitude=0.106108, noise variance=0.00022890</code></pre>
 </div>
 </div>
 </section>
@@ -445,7 +478,7 @@ Hyperparameter Acceptance Rate: 15.88%</code></pre>
 <h2 data-number="3.3" class="anchored" data-anchor-id="posterior-visualization"><span class="header-section-number">3.3</span> Posterior visualization</h2>
 <section id="coefficient-function-estimation" class="level3" data-number="3.3.1">
 <h3 data-number="3.3.1" class="anchored" data-anchor-id="coefficient-function-estimation"><span class="header-section-number">3.3.1</span> Coefficient function estimation</h3>
-<div id="18d7328c" class="cell" data-execution_count="13">
+<div id="18d7328c" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-09-29T12:47:44.893321Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-09-29T12:47:44.893321Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-09-29T12:47:45.808884Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-09-29T12:47:45.808884Z&quot;}}" data-execution_count="13">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -457,7 +490,7 @@ Hyperparameter Acceptance Rate: 15.88%</code></pre>
 </section>
 <section id="predict-reflectance-spectra-given-mi-and-ei" class="level3" data-number="3.3.2">
 <h3 data-number="3.3.2" class="anchored" data-anchor-id="predict-reflectance-spectra-given-mi-and-ei"><span class="header-section-number">3.3.2</span> Predict reflectance spectra given MI and EI</h3>
-<div id="0dd95bab" class="cell" data-execution_count="14">
+<div id="0dd95bab" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-09-29T12:47:45.812898Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-09-29T12:47:45.812898Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-09-29T12:47:46.514897Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-09-29T12:47:46.514897Z&quot;}}" data-execution_count="14">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -470,7 +503,7 @@ Hyperparameter Acceptance Rate: 15.88%</code></pre>
 </section>
 <section id="subject-specific-deviation" class="level3" data-number="3.3.3">
 <h3 data-number="3.3.3" class="anchored" data-anchor-id="subject-specific-deviation"><span class="header-section-number">3.3.3</span> Subject-specific deviation</h3>
-<div id="e6b5fb1e" class="cell" data-execution_count="15">
+<div id="e6b5fb1e" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-09-29T12:47:46.519477Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-09-29T12:47:46.519477Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-09-29T12:47:50.366258Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-09-29T12:47:50.366258Z&quot;}}" data-execution_count="15">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -479,7 +512,7 @@ Hyperparameter Acceptance Rate: 15.88%</code></pre>
 </div>
 </div>
 </div>
-<div id="d764c3f9" class="cell" data-execution_count="16">
+<div id="d764c3f9" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-09-29T12:47:50.374263Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-09-29T12:47:50.373265Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-09-29T12:47:50.791532Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-09-29T12:47:50.791532Z&quot;}}" data-execution_count="16">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -495,7 +528,7 @@ Hyperparameter Acceptance Rate: 15.88%</code></pre>
 <h1 data-number="4"><span class="header-section-number">4</span> Model diagnostics and evaluation</h1>
 <section id="evaluation-on-training-data" class="level2" data-number="4.1">
 <h2 data-number="4.1" class="anchored" data-anchor-id="evaluation-on-training-data"><span class="header-section-number">4.1</span> Evaluation on training data</h2>
-<div id="b46c9b9c" class="cell" data-execution_count="17">
+<div id="b46c9b9c" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-09-29T12:47:50.799129Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-09-29T12:47:50.799129Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-09-29T12:47:50.822505Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-09-29T12:47:50.822505Z&quot;}}" data-execution_count="17">
 <div class="cell-output cell-output-display" data-execution_count="17">
 <div>
 
@@ -531,7 +564,7 @@ Hyperparameter Acceptance Rate: 15.88%</code></pre>
 </div>
 </div>
 </div>
-<div id="eadde99a" class="cell" data-execution_count="18">
+<div id="eadde99a" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-09-29T12:47:50.824531Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-09-29T12:47:50.823531Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-09-29T12:47:51.009851Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-09-29T12:47:51.009851Z&quot;}}" data-execution_count="18">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -540,7 +573,7 @@ Hyperparameter Acceptance Rate: 15.88%</code></pre>
 </div>
 </div>
 </div>
-<div id="240b066e" class="cell" data-execution_count="19">
+<div id="240b066e" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-09-29T12:47:51.011349Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-09-29T12:47:51.011349Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-09-29T12:47:51.231068Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-09-29T12:47:51.231068Z&quot;}}" data-execution_count="19">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -549,7 +582,7 @@ Hyperparameter Acceptance Rate: 15.88%</code></pre>
 </div>
 </div>
 </div>
-<div id="e550d28c" class="cell" data-execution_count="20">
+<div id="e550d28c" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-09-29T12:47:51.233113Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-09-29T12:47:51.233113Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-09-29T12:48:01.131322Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-09-29T12:48:01.131322Z&quot;}}" data-execution_count="20">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -561,7 +594,7 @@ Hyperparameter Acceptance Rate: 15.88%</code></pre>
 </section>
 <section id="evaluation-on-test-data" class="level2" data-number="4.2">
 <h2 data-number="4.2" class="anchored" data-anchor-id="evaluation-on-test-data"><span class="header-section-number">4.2</span> Evaluation on test data</h2>
-<div id="d19aed26" class="cell" data-execution_count="21">
+<div id="d19aed26" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-09-29T12:48:01.144381Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-09-29T12:48:01.143377Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-09-29T12:48:01.151044Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-09-29T12:48:01.151044Z&quot;}}" data-execution_count="21">
 <div class="cell-output cell-output-display" data-execution_count="21">
 <div>
 
@@ -590,7 +623,7 @@ Hyperparameter Acceptance Rate: 15.88%</code></pre>
 </div>
 </div>
 </div>
-<div id="a8e1a14e" class="cell" data-execution_count="22">
+<div id="a8e1a14e" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-09-29T12:48:01.153477Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-09-29T12:48:01.152398Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-09-29T12:48:01.322273Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-09-29T12:48:01.322273Z&quot;}}" data-execution_count="22">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -599,7 +632,7 @@ Hyperparameter Acceptance Rate: 15.88%</code></pre>
 </div>
 </div>
 </div>
-<div id="540e21a7" class="cell" data-execution_count="23">
+<div id="540e21a7" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-09-29T12:48:01.324281Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-09-29T12:48:01.324281Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-09-29T12:48:01.519342Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-09-29T12:48:01.519342Z&quot;}}" data-execution_count="23">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -608,7 +641,7 @@ Hyperparameter Acceptance Rate: 15.88%</code></pre>
 </div>
 </div>
 </div>
-<div id="167fc982" class="cell" data-execution_count="24">
+<div id="167fc982" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-09-29T12:48:01.522359Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-09-29T12:48:01.521371Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-09-29T12:48:05.810693Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-09-29T12:48:05.810693Z&quot;}}" data-execution_count="24">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -629,7 +662,16 @@ Hyperparameter Acceptance Rate: 15.88%</code></pre>
 <li>The new subject-specific deviation <span class="math inline">\(Z^*\)</span> is sampled from <span class="math inline">\(p(Z^*\mid Y)=\int p(Z^*\mid Z) p(Z\mid Y) dZ=p(Z^*)\)</span>, where the last equality holds as <span class="math inline">\(Z^*\)</span> is independent to <span class="math inline">\(Z\)</span>.</li>
 </ul></li>
 </ol>
-<div id="51598be8" class="cell">
+<div id="eed85d9a" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-09-29T12:48:05.834189Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-09-29T12:48:05.834189Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-09-29T12:48:14.442123Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-09-29T12:48:14.442123Z&quot;}}" data-execution_count="26">
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="bvcm_files/figure-html/cell-27-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="51598be8" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-09-29T12:48:14.466251Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-09-29T12:48:14.466251Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-09-29T12:48:15.088352Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-09-29T12:48:15.088352Z&quot;}}" data-execution_count="27">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -641,114 +683,191 @@ Hyperparameter Acceptance Rate: 15.88%</code></pre>
 </section>
 <section id="skin-reflectance-spectrum-filter" class="level1" data-number="6">
 <h1 data-number="6"><span class="header-section-number">6</span> Skin reflectance spectrum filter</h1>
-<p>To ensure the quality and biological plausibility of simulated skin reflectance spectra, we implement a two-stage filtering approach based on the fitted GMM and BVCM model:</p>
+<p>We assess consistency with the ISSA reference data using the existing two-stage procedure:</p>
 <ol type="1">
-<li><p><strong>Chromophore Index Validation:</strong> For each candidate spectrum, compute the corresponding melanin variable (MEL) and heomoglobin variable (HEM) using the standard formulae. Reject spectra whose chromophore indices fall outside the 95% confidence regions of the fitted GMM, as these represent biologically implausible combinations of melanin and hemoglobin effects not observed in real human skin.</p></li>
-<li><p><strong>Spectral Plausibility Assessment:</strong> For spectra that pass Stage 1, evaluate their statistical plausibility using the BVCM model. Given the spectrum’s (MEL, HEM) pair, compute the population-level predicted spectrum from the BVCM fixed effects. Calculate the Mahalanobis distance between the candidate spectrum and the predicted spectrum, accounting for the covariance structure learned from the training data. Reject spectra whose Mahalanobis distance exceeds a predetermined threshold (e.g., the 95th percentile of distances observed in the training set), as these exhibit systematic deviations inconsistent with empirically observed skin optical properties.</p></li>
+<li><strong>Chromophore index validation:</strong> compute MI and EI and retain candidates inside at least one of the fitted GMM components’ 95% probability ellipses.</li>
+<li><strong>Spectral assessment:</strong> among Stage 1 candidates, retain spectra whose BVCM residual Mahalanobis distance does not exceed the 95th percentile of the ISSA training distances.</li>
 </ol>
-<p>This dual-stage filter ensures generated spectra are both compositionally plausible (Stage 1) and spectrally consistent with real human skin measurements (Stage 2).</p>
-<section id="pca-comparison-of-issa-bvcm-predictions-and-meta-spectra" class="level2" data-number="6.1">
-<h2 data-number="6.1" class="anchored" data-anchor-id="pca-comparison-of-issa-bvcm-predictions-and-meta-spectra"><span class="header-section-number">6.1</span> PCA comparison of ISSA, BVCM predictions, and meta spectra</h2>
-<p>To compare spectral variation on a common basis, we fit PCA to the real ISSA face spectra and project the BVCM population-level predictions and the BioSkin <code>meta_spectra</code> onto the resulting components. This reference-based approach keeps the axes directly comparable: overlap with the ISSA score distribution indicates that a dataset reproduces the dominant empirical modes of variation, whereas displacement or dispersion outside the ISSA 95% score ellipse identifies systematic differences. BioSkin reflectance is converted from proportions to percentages when necessary so that all three inputs use the same scale.</p>
-<div id="fig-pca-issa-bvcm-meta" class="quarto-float quarto-figure quarto-figure-center anchored" alt="A PCA score plot comparing ISSA face data, BVCM predictions, and BioSkin meta spectra, alongside PC loading curves over wavelength.">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-pca-issa-bvcm-meta-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="../figures/pca_issa_bvcm_meta_comparison.png" class="img-fluid figure-img" alt="A PCA score plot comparing ISSA face data, BVCM predictions, and BioSkin meta spectra, alongside PC loading curves over wavelength.">
+<p>Rejection indicates inconsistency with this ISSA reference under these criteria. It does not establish biological implausibility or distinguish missing empirical coverage from other causes.</p>
+<section id="corrected-bioskin-inputs" class="level3" data-number="6.0.1">
+<h3 data-number="6.0.1" class="anchored" data-anchor-id="corrected-bioskin-inputs"><span class="header-section-number">6.0.1</span> Corrected BioSkin inputs</h3>
+<p>This section uses Carlos’s corrected 4,000-spectrum dataset in <code>bioskin_data/</code>. The network-ready CSV places <strong>melanin type ratio in column 4</strong> and <strong>blood oxygenation in column 5</strong> (one-based). The physical-units CSV has its own named column order. Parameter plots use the physical values, with thickness expressed in micrometres.</p>
+<p>The input loader checks row counts, parameter scaling and slot order, finite reflectance fractions, and exact wavelength alignment. Reflectance is converted to percentages once. The existing GMM and BVCM validation criteria are unchanged. Execute the notebook with the ISSA workbook available to obtain updated validation results.</p>
+<div id="87e91699" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-09-29T12:48:15.093357Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-09-29T12:48:15.093357Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-09-29T12:48:15.247853Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-09-29T12:48:15.247853Z&quot;}}" data-execution_count="28">
+<div class="cell-output cell-output-stdout">
+<pre><code>Loaded 4,000 corrected BioSkin spectra at 31 ISSA wavelengths.
+Reflectance range: 0.6830% to 72.5010%</code></pre>
 </div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-pca-issa-bvcm-meta-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;1: Shared PCA comparison of real ISSA face spectra, BVCM-predicted reflectance, and BioSkin meta spectra.
-</figcaption>
-</figure>
 </div>
-<p><strong>Color key:</strong> blue circles represent the real ISSA face spectra, orange triangles represent BVCM-predicted reflectance, and green crosses represent the BioSkin meta spectra. Large X symbols mark the three dataset centroids; the dashed black ellipse is the ISSA 95% score region.</p>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 16%">
-<col style="width: 16%">
-<col style="width: 16%">
-<col style="width: 16%">
-<col style="width: 16%">
-<col style="width: 16%">
-</colgroup>
+<div id="e74350f1" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-09-29T12:48:15.249859Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-09-29T12:48:15.248858Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-09-29T12:48:15.262882Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-09-29T12:48:15.262198Z&quot;}}" data-execution_count="29">
+<div class="cell-output cell-output-display" data-execution_count="29">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
 <thead>
 <tr class="header">
-<th style="text-align: left;">Dataset</th>
-<th style="text-align: right;"><span class="math inline">\(n\)</span></th>
-<th style="text-align: right;">PC1 SD</th>
-<th style="text-align: right;">PC2 SD</th>
-<th style="text-align: right;">Centroid distance from ISSA</th>
-<th style="text-align: right;">Within ISSA 95% region</th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">count</th>
+<th data-quarto-table-cell-role="th">mean</th>
+<th data-quarto-table-cell-role="th">std</th>
+<th data-quarto-table-cell-role="th">min</th>
+<th data-quarto-table-cell-role="th">25%</th>
+<th data-quarto-table-cell-role="th">50%</th>
+<th data-quarto-table-cell-role="th">75%</th>
+<th data-quarto-table-cell-role="th">max</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">Real ISSA face data</td>
-<td style="text-align: right;">7,923</td>
-<td style="text-align: right;">41.01</td>
-<td style="text-align: right;">8.42</td>
-<td style="text-align: right;">0.00</td>
-<td style="text-align: right;">93.4%</td>
+<th data-quarto-table-cell-role="th">Melanin volume fraction</th>
+<td>4000.0</td>
+<td>0.214655</td>
+<td>0.124476</td>
+<td>0.001223</td>
+<td>0.106036</td>
+<td>0.213578</td>
+<td>0.324239</td>
+<td>0.429899</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">BVCM predicted reflectance</td>
-<td style="text-align: right;">3,000</td>
-<td style="text-align: right;">39.22</td>
-<td style="text-align: right;">7.96</td>
-<td style="text-align: right;">0.04</td>
-<td style="text-align: right;">95.3%</td>
+<th data-quarto-table-cell-role="th">Blood volume fraction</th>
+<td>4000.0</td>
+<td>0.099230</td>
+<td>0.057012</td>
+<td>0.001063</td>
+<td>0.049932</td>
+<td>0.099178</td>
+<td>0.147731</td>
+<td>0.199995</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">BioSkin meta spectra</td>
-<td style="text-align: right;">1,282</td>
-<td style="text-align: right;">109.58</td>
-<td style="text-align: right;">20.54</td>
-<td style="text-align: right;">0.56</td>
-<td style="text-align: right;">30.8%</td>
+<th data-quarto-table-cell-role="th">Thickness (micrometres)</th>
+<td>4000.0</td>
+<td>150.322165</td>
+<td>57.526798</td>
+<td>50.002600</td>
+<td>99.782725</td>
+<td>151.557250</td>
+<td>199.059950</td>
+<td>249.893200</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">Melanin type ratio</th>
+<td>4000.0</td>
+<td>0.725285</td>
+<td>0.043141</td>
+<td>0.650019</td>
+<td>0.687451</td>
+<td>0.726239</td>
+<td>0.762529</td>
+<td>0.799992</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">Blood oxygenation</th>
+<td>4000.0</td>
+<td>0.950499</td>
+<td>0.029105</td>
+<td>0.900002</td>
+<td>0.925313</td>
+<td>0.950867</td>
+<td>0.975665</td>
+<td>0.999956</td>
 </tr>
 </tbody>
 </table>
-<p>The first two ISSA components explain 98.6% of the empirical spectral variance (94.6% for PC1 and 4.0% for PC2). The BVCM predictions closely reproduce this distribution: their centroid is only 0.04 standardized PC units from the ISSA centroid, and 95.3% fall inside the ISSA 95% score region. In contrast, only 30.8% of the BioSkin meta spectra fall inside that region. Their spread is also substantially wider—approximately 2.7 times the ISSA standard deviation on PC1 and 2.4 times on PC2—indicating that the meta spectra include modes or magnitudes of variation not commonly observed in the real face data.</p>
-<p>The score plot and summary table provide complementary comparisons. The centroid distance measures systematic displacement from ISSA in standardized PC units, while the percentage inside the ISSA 95% region measures distributional overlap. The loading curves show which wavelength combinations drive separation along PC1 and PC2.</p>
+
+</div>
+</div>
+</div>
+<div id="bioskin-param-distributions" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-09-29T12:48:15.264187Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-09-29T12:48:15.264187Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-09-29T12:48:16.348067Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-09-29T12:48:16.348067Z&quot;}}" data-execution_count="30">
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="bvcm_files/figure-html/cell-31-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="a42d72e9" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-09-29T12:48:16.349548Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-09-29T12:48:16.349548Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-09-29T12:48:21.490040Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-09-29T12:48:21.490040Z&quot;}}" data-execution_count="31">
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="bvcm_files/figure-html/cell-32-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="pca-comparison-of-issa-bvcm-predictions-and-bioskin-spectra" class="level2" data-number="6.1">
+<h2 data-number="6.1" class="anchored" data-anchor-id="pca-comparison-of-issa-bvcm-predictions-and-bioskin-spectra"><span class="header-section-number">6.1</span> PCA comparison of ISSA, BVCM predictions, and BioSkin spectra</h2>
+<p>To compare spectral variation on a common basis, we fit PCA to the real ISSA face spectra and project the BVCM population-level predictions and the BioSkin <code>bioskin_spectra</code> onto the resulting components. This reference-based approach keeps the axes directly comparable: overlap with the ISSA score distribution indicates that a dataset reproduces the dominant empirical modes of variation, whereas displacement or dispersion outside the ISSA 95% score ellipse identifies systematic differences. BioSkin reflectance is already converted to percentages when loaded, so all three inputs use the same scale.</p>
+<div id="5b425c8d" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-09-29T12:48:22.022611Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-09-29T12:48:22.022611Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-09-29T12:48:22.027998Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-09-29T12:48:22.027998Z&quot;}}" data-execution_count="34">
+<div class="cell-output cell-output-display">
+<style type="text/css">
+</style>
+
+<table id="T_96d22" class="caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th class="blank level0" data-quarto-table-cell-role="th">&nbsp;</th>
+<th id="T_96d22_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">Dataset</th>
+<th id="T_96d22_level0_col1" class="col_heading level0 col1" data-quarto-table-cell-role="th">n</th>
+<th id="T_96d22_level0_col2" class="col_heading level0 col2" data-quarto-table-cell-role="th">PC1 mean</th>
+<th id="T_96d22_level0_col3" class="col_heading level0 col3" data-quarto-table-cell-role="th">PC1 SD</th>
+<th id="T_96d22_level0_col4" class="col_heading level0 col4" data-quarto-table-cell-role="th">PC2 mean</th>
+<th id="T_96d22_level0_col5" class="col_heading level0 col5" data-quarto-table-cell-role="th">PC2 SD</th>
+<th id="T_96d22_level0_col6" class="col_heading level0 col6" data-quarto-table-cell-role="th">Centroid distance from ISSA</th>
+<th id="T_96d22_level0_col7" class="col_heading level0 col7" data-quarto-table-cell-role="th">Within ISSA 95% region (%)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th id="T_96d22_level0_row0" class="row_heading level0 row0" data-quarto-table-cell-role="th">0</th>
+<td id="T_96d22_row0_col0" class="data row0 col0">Real ISSA face data</td>
+<td id="T_96d22_row0_col1" class="data row0 col1">7923</td>
+<td id="T_96d22_row0_col2" class="data row0 col2">0.00</td>
+<td id="T_96d22_row0_col3" class="data row0 col3">41.01</td>
+<td id="T_96d22_row0_col4" class="data row0 col4">0.00</td>
+<td id="T_96d22_row0_col5" class="data row0 col5">8.42</td>
+<td id="T_96d22_row0_col6" class="data row0 col6">0.00</td>
+<td id="T_96d22_row0_col7" class="data row0 col7">93.4</td>
+</tr>
+<tr class="even">
+<th id="T_96d22_level0_row1" class="row_heading level0 row1" data-quarto-table-cell-role="th">1</th>
+<td id="T_96d22_row1_col0" class="data row1 col0">BVCM predicted reflectance</td>
+<td id="T_96d22_row1_col1" class="data row1 col1">3000</td>
+<td id="T_96d22_row1_col2" class="data row1 col2">0.53</td>
+<td id="T_96d22_row1_col3" class="data row1 col3">39.31</td>
+<td id="T_96d22_row1_col4" class="data row1 col4">0.43</td>
+<td id="T_96d22_row1_col5" class="data row1 col5">7.80</td>
+<td id="T_96d22_row1_col6" class="data row1 col6">0.05</td>
+<td id="T_96d22_row1_col7" class="data row1 col7">95.4</td>
+</tr>
+<tr class="odd">
+<th id="T_96d22_level0_row2" class="row_heading level0 row2" data-quarto-table-cell-role="th">2</th>
+<td id="T_96d22_row2_col0" class="data row2 col0">BioSkin spectra</td>
+<td id="T_96d22_row2_col1" class="data row2 col1">4000</td>
+<td id="T_96d22_row2_col2" class="data row2 col2">-107.53</td>
+<td id="T_96d22_row2_col3" class="data row2 col3">51.16</td>
+<td id="T_96d22_row2_col4" class="data row2 col4">-5.51</td>
+<td id="T_96d22_row2_col5" class="data row2 col5">10.86</td>
+<td id="T_96d22_row2_col6" class="data row2 col6">2.70</td>
+<td id="T_96d22_row2_col7" class="data row2 col7">22.8</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>The first two ISSA components explain 98.55% of spectral variance.
+Corrected BioSkin spectra within the ISSA PC1-PC2 95% score ellipse: 22.78%.
+This PCA comparison is descriptive and is separate from the two-stage validation decision.</code></pre>
+</div>
+</div>
 </section>
 <section id="stage-1-chromophore-index-validation" class="level2" data-number="6.2">
 <h2 data-number="6.2" class="anchored" data-anchor-id="stage-1-chromophore-index-validation"><span class="header-section-number">6.2</span> Stage 1: Chromophore index validation</h2>
-<div id="73713e9f" class="cell" data-execution_count="74">
-<div class="cell-output cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="bvcm_files/figure-html/cell-34-output-1.png" class="img-fluid figure-img"></p>
-</figure>
-</div>
-</div>
-</div>
-</section>
-<section id="stage-2-spectral-plausibility-assessment" class="level2" data-number="6.3">
-<h2 data-number="6.3" class="anchored" data-anchor-id="stage-2-spectral-plausibility-assessment"><span class="header-section-number">6.3</span> Stage 2: Spectral plausibility assessment</h2>
-<div id="1d04a943" class="cell" data-execution_count="75">
-<div class="cell-output cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="bvcm_files/figure-html/cell-35-output-1.png" class="img-fluid figure-img"></p>
-</figure>
-</div>
-</div>
-</div>
-</section>
-<section id="meta-spectra-validation-overview" class="level2" data-number="6.4">
-<h2 data-number="6.4" class="anchored" data-anchor-id="meta-spectra-validation-overview"><span class="header-section-number">6.4</span> Meta spectra validation overview</h2>
-<div id="meta-three-panel-plot" class="cell" data-execution_count="79">
-<div class="cell-output cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="bvcm_files/figure-html/cell-36-output-1.png" class="img-fluid figure-img"></p>
-</figure>
-</div>
-</div>
-</div>
-</section>
-<section id="validation-results-summary" class="level2" data-number="6.5">
-<h2 data-number="6.5" class="anchored" data-anchor-id="validation-results-summary"><span class="header-section-number">6.5</span> Validation results summary</h2>
-<div id="5f65ab7d" class="cell" data-execution_count="76">
+<div id="73713e9f" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-09-29T12:48:22.036656Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-09-29T12:48:22.036656Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-09-29T12:48:25.294945Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-09-29T12:48:25.294945Z&quot;}}" data-execution_count="36">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -757,7 +876,43 @@ Figure&nbsp;1: Shared PCA comparison of real ISSA face spectra, BVCM-predicted r
 </div>
 </div>
 </div>
-<div id="bbd71617" class="cell" data-execution_count="35">
+</section>
+<section id="stage-2-spectral-plausibility-assessment" class="level2" data-number="6.3">
+<h2 data-number="6.3" class="anchored" data-anchor-id="stage-2-spectral-plausibility-assessment"><span class="header-section-number">6.3</span> Stage 2: Spectral plausibility assessment</h2>
+<div id="1d04a943" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-09-29T12:48:25.306287Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-09-29T12:48:25.306287Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-09-29T12:48:26.099233Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-09-29T12:48:26.099233Z&quot;}}" data-execution_count="37">
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="bvcm_files/figure-html/cell-38-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="bioskin-spectra-validation-overview" class="level2" data-number="6.4">
+<h2 data-number="6.4" class="anchored" data-anchor-id="bioskin-spectra-validation-overview"><span class="header-section-number">6.4</span> BioSkin spectra validation overview</h2>
+<div id="bioskin-three-panel-plot" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-09-29T12:48:26.110238Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-09-29T12:48:26.109238Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-09-29T12:48:34.341892Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-09-29T12:48:34.340878Z&quot;}}" data-execution_count="38">
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="bvcm_files/figure-html/cell-39-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="validation-results-summary" class="level2" data-number="6.5">
+<h2 data-number="6.5" class="anchored" data-anchor-id="validation-results-summary"><span class="header-section-number">6.5</span> Validation results summary</h2>
+<div id="5f65ab7d" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-09-29T12:48:34.359138Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-09-29T12:48:34.359138Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-09-29T12:48:44.209406Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-09-29T12:48:44.209406Z&quot;}}" data-execution_count="39">
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="bvcm_files/figure-html/cell-40-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="bbd71617" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-09-29T12:48:44.241259Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-09-29T12:48:44.240104Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-09-29T12:48:44.246437Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-09-29T12:48:44.246437Z&quot;}}" data-execution_count="40">
 <div class="cell-output cell-output-stdout">
 <pre><code>
 ======================================================================
@@ -765,25 +920,30 @@ TWO-STAGE VALIDATION FILTER SUMMARY
 ======================================================================
 
 Stage 1: Chromophore Index Validation (GMM 95% CI)
-  Input spectra: 3624
-  Valid (within GMM): 1481 (40.9%)
-  Invalid (outside GMM): 2143 (59.1%)
+  Input spectra: 4000
+  Valid (within GMM): 1167 (29.2%)
+  Invalid (outside GMM): 2833 (70.8%)
 
 Stage 2: Spectral Plausibility Assessment (Mahalanobis Distance)
-  Input (from Stage 1): 1481
+  Input (from Stage 1): 1167
   Threshold: 9.41 (95th percentile from training)
-  Valid (plausible spectra): 986 (66.6%)
-  Invalid (implausible spectra): 495 (33.4%)
+  Valid (plausible spectra): 733 (62.8%)
+  Invalid (implausible spectra): 434 (37.2%)
 
 Overall Filter Performance:
-  Total input: 3624
-  Total valid: 986 (27.2%)
-  Total rejected: 2638 (72.8%)
+  Total input: 4000
+  Total valid: 733 (18.3%)
+  Total rejected: 3267 (81.7%)
 
 Chromophore Index Statistics (Valid Spectra):
-  Melanin Index: [20.37, 97.38]
-  Erythema Index: [16.32, 49.44]
+  Melanin Index: [20.85, 97.15]
+  Erythema Index: [16.79, 49.53]
 ======================================================================</code></pre>
+</div>
+</div>
+<div id="corrected-validation-exports" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-09-29T12:48:44.247442Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-09-29T12:48:44.247442Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-09-29T12:48:44.326132Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-09-29T12:48:44.326132Z&quot;}}" data-execution_count="41">
+<div class="cell-output cell-output-stdout">
+<pre><code>Validation results saved to D:\THUCloud\Seafile\SkinSpectra\SkinSim_Quarto\output\corrected_validation</code></pre>
 </div>
 </div>
 
@@ -865,7 +1025,7 @@ Chromophore Index Statistics (Valid Spectra):
     }
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
-        var filterRegex = new RegExp('/' + window.location.host + '/');
+        var filterRegex = new RegExp("https:\/\/lasisilab\.github\.io\/SkinSim_Quarto\/");
       var isInternal = (href) => {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }

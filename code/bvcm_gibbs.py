@@ -247,9 +247,13 @@ class BVCM_GibbsSampler:
         # 3. Sample
         self.sigma2 = stats.invgamma.rvs(alpha_post, scale=beta_post)
 
-    def run(self, draws=1000, tune=1000):
+    def run(self, draws=1000, tune=1000, store_z_curves=True, progress_every=0):
         print(f"Starting Gibbs Sampler for {draws} draws and {tune} tune steps...")
         self.acc_count = 0
+        # Validation needs the mean deviation, not every subject-level draw.
+        # Accumulate the same thinned draws without retaining a multi-GB array.
+        z_sum = np.zeros((self.N, self.M))
+        z_count = 0
 
         for _ in range(tune):
             self.sample_fixed_effects()
@@ -257,6 +261,8 @@ class BVCM_GibbsSampler:
             self.sample_random_effects()
             self.sample_variance()
             self.sample_hsgp_hyperparameters()
+            if progress_every and (_ + 1) % progress_every == 0:
+                print(f"Tuning: {_ + 1}/{tune}", flush=True)
 
         for i in range(draws):
             self.sample_fixed_effects()
@@ -274,9 +280,16 @@ class BVCM_GibbsSampler:
                 #     b_curve[j] = self.ebars_models[j].B @ self.ebars_models[j].beta
                 self.trace['beta_curves'].append(b_curve)
                 z_curves = self.w_z @ self.Phi.T  # (N, M)
-                self.trace['z_curves'].append(z_curves)
+                z_sum += z_curves
+                z_count += 1
+                if store_z_curves:
+                    self.trace['z_curves'].append(z_curves)
                 self.trace['ls_z'].append(self.ls_z)
                 self.trace['eta_z'].append(self.eta_z)
                 self.trace['sigma2'].append(self.sigma2)
 
+            if progress_every and (i + 1) % progress_every == 0:
+                print(f"Sampling: {i + 1}/{draws}", flush=True)
+
+        self.z_mean = z_sum / z_count
         print(f"Hyperparameter Acceptance Rate: {self.acc_count / (tune + draws):.2%}")

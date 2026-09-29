@@ -1,15 +1,26 @@
 project:
   type: website
   output-dir: docs
+  render:
+    - "*.qmd"
+    - "analysis/*.qmd"
+    - "notebooks/*.ipynb"
+    - "manuscripts/*.qmd"
+  resources:
+    - ".nojekyll"
+    - "output/corrected_validation/rerun_report.html"
 
 website:
   title: "SkinSim"
+  site-url: "https://lasisilab.github.io/SkinSim_Quarto/"
   navbar:
     left:
       - href: index.qmd
         text: Home
       - href: analysis/index.qmd
         text: Analysis
+      - href: analysis/bioskin_validation.qmd
+        text: BioSkin validation
       - href: about.qmd
         text: About
 

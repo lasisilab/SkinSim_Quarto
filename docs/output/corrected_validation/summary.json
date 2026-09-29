@@ -1,0 +1,91 @@
+{
+  "status": "complete",
+  "fit_source": "refitted_current_gibbs_model",
+  "checkpoint_file": "bvcm_gibbs_validation_checkpoint.npz",
+  "checkpoint_sha256": "d56fb7fa6929ac9fdf441e76aba8b730bb8cf88527e0f5f22a0a024dd55579eb",
+  "sampler_sha256": "6dede1ed5bcc46f27b2e27cf1aa9e9240b8a2c6380eeaa6292b52088e1dde40f",
+  "fit_acceptance_rate": 0.1588,
+  "posterior_mean_length_scale": 45.844507945051085,
+  "posterior_mean_amplitude": 0.10610834860850996,
+  "posterior_mean_noise_variance": 0.0002288968832305805,
+  "completed_at_utc": "2026-09-29T12:48:44.288941+00:00",
+  "source_files": {
+    "spectra": {
+      "name": "corrected_spectral_reflectance_smoothed.csv",
+      "sha256": "0d419a2334d6142e90ef58976df0719a32cf5a4a4279a337169b65361871d45f"
+    },
+    "network_parameters": {
+      "name": "corrected_skin_props_network_ready.csv",
+      "sha256": "335b135e325440be07b33b11d44d6051b371ab6bb5e85231d3b99c52589153b8"
+    },
+    "physical_parameters": {
+      "name": "corrected_skin_props_raw_physical_units.csv",
+      "sha256": "a3f78ba64a66f32ed56e3f0c1ab882f3aacecf53b6eeaa9a78e25a44c364d5fc"
+    }
+  },
+  "issa_workbook_sha256": "7396aa7608f1a6f91ec70bf8f8421252a9d81f71a2bca066eb7e98155b9d1161",
+  "wavelengths_nm": [
+    400.0,
+    410.0,
+    420.0,
+    430.0,
+    440.0,
+    450.0,
+    460.0,
+    470.0,
+    480.0,
+    490.0,
+    500.0,
+    510.0,
+    520.0,
+    530.0,
+    540.0,
+    550.0,
+    560.0,
+    570.0,
+    580.0,
+    590.0,
+    600.0,
+    610.0,
+    620.0,
+    630.0,
+    640.0,
+    650.0,
+    660.0,
+    670.0,
+    680.0,
+    690.0,
+    700.0
+  ],
+  "reflectance_units_in_validation": "percent",
+  "issa_face_spectra": 7923,
+  "training_spectra": 6338,
+  "test_spectra": 1585,
+  "candidate_spectra": 4000,
+  "stage1_pass": 1167,
+  "stage1_rejected": 2833,
+  "stage2_pass": 733,
+  "stage2_rejected": 434,
+  "passed_both": 733,
+  "rejected_overall": 3267,
+  "passed_both_percent": 18.325,
+  "stage1_threshold": 2.447746830680816,
+  "stage2_threshold": 9.411414980765736,
+  "retained_MI_range": [
+    20.85223337812222,
+    97.15049995211432
+  ],
+  "retained_EI_range": [
+    16.785632971077018,
+    49.53371183930212
+  ],
+  "bioskin_pca_coverage_percent": 22.775000000000002,
+  "python_version": "3.12.14",
+  "package_versions": {
+    "numpy": "2.5.3",
+    "pandas": "3.0.6",
+    "scipy": "1.18.1",
+    "scikit-learn": "1.9.1",
+    "patsy": "1.0.3"
+  }
+}

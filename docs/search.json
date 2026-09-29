@@ -130,21 +130,21 @@
     "href": "index.html#statistical-analyses",
     "title": "SkinSim",
     "section": "2 Statistical analyses",
-    "text": "2 Statistical analyses\nThe project will perform various statistical analyses to explore the properties of skin reflectance. These analyses include:\n\nDescriptive statistics to summarize the reflectance data.\nReflectance spectrum filter to classify realistic skin reflectance spectra from synthetic ones.\nShape analysis to explore the relationship between skin properties and reflectance shapes.\nBayesian varying coefficient models to investigate the effects of skin parameters on skin reflectance."
+    "text": "2 Statistical analyses\nThe BioSkin validation results summarize the analysis of 4,000 generated spectra: 1,167 pass MI–EI screening and 733 (18.325%) pass both validation stages. See the executed BVCM notebook for the full analysis and the rerun report for the paired comparison and audit.\nThe project will perform various statistical analyses to explore the properties of skin reflectance. These analyses include:\n\nDescriptive statistics to summarize the reflectance data.\nReflectance spectrum filter to classify realistic skin reflectance spectra from synthetic ones.\nShape analysis to explore the relationship between skin properties and reflectance shapes.\nBayesian varying coefficient models to investigate the effects of skin parameters on skin reflectance."
   },
   {
     "objectID": "index.html#references",
     "href": "index.html#references",
     "title": "SkinSim",
     "section": "3 References",
-    "text": "3 References\n\n\nAliaga, Carlos, Menqi Xia, Xiao Xie, Adrian Jarabo, Gustav Braun, and Christophe Hery. 2023. “A Hyperspectral Space of Skin Tones for Inverse Rendering of Biophysical Skin Properties.” Computer Graphics Forum 42 (4): e14887. https://doi.org/10.1111/cgf.14887.\n\n\nLu, Yan, Kaida Xiao, Michael Pointer, Ruili He, Sicong Zhou, Ahmed Nasseraldin, Suchitra Sueeprasan, et al. 2025. “The International Skin Spectra Archive (ISSA): A Multicultural Human Skin Phenotype and Colour Spectra Collection.” Scientific Data 12 (1): 487. https://doi.org/10.1038/s41597-025-04857-5."
+    "text": "3 References\n\n\nAliaga, Carlos, Menqi Xia, Xiao Xie, Adrian Jarabo, Gustav Braun, and Christophe Hery. 2023. “A Hyperspectral Space of Skin Tones for Inverse Rendering of Biophysical Skin Properties.” Computer Graphics Forum 42 (4): e14887. https://doi.org/10.1111/cgf.14887.\n\n\nLu, Yan, Kaida Xiao, Michael Pointer, et al. 2025. “The International Skin Spectra Archive (ISSA): A Multicultural Human Skin Phenotype and Colour Spectra Collection.” Scientific Data 12 (1): 487. https://doi.org/10.1038/s41597-025-04857-5."
   },
   {
     "objectID": "analysis/index.html",
     "href": "analysis/index.html",
     "title": "Analysis",
     "section": "",
-    "text": "This section contains statistical analysis reports as followings:\n\nDescriptive statistics and visualizations:\n\nSimulated Reflectances\nISSA Skin Reflectance\n\nReflectance spectrum filter:\n\nSkin Reflectance Spectra Filter\nAnalysis of Skin Reflectance Spectra Filter\n\nShape analysis:\n\nShape Analysis of Skin Reflectance Spectra\n\nBayesian varying coefficient models:\n\nBayesian Varying Coefficient Models for Skin Reflectance"
+    "text": "This section contains statistical analysis reports as followings:\n\nDescriptive statistics and visualizations:\n\nSimulated Reflectances\nISSA Skin Reflectance\n\nReflectance spectrum filter:\n\nSkin Reflectance Spectra Filter\nAnalysis of Skin Reflectance Spectra Filter\n\nShape analysis:\n\nShape Analysis of Skin Reflectance Spectra\n\nBayesian varying coefficient models:\n\nBayesian Varying Coefficient Models for Skin Reflectance\nBioSkin validation results and publication figures\nValidation rerun report and parameter-pairing audit"
   },
   {
     "objectID": "analysis/sim_data.html",
@@ -347,7 +347,7 @@
     "href": "notebooks/bvcm.html#gibbs-sampler",
     "title": "Bayesian Varying Coefficient Model (BVCM) for Skin Reflectance Spectra",
     "section": "3.2 Gibbs sampler",
-    "text": "3.2 Gibbs sampler\n\n\nStarting Gibbs Sampler for 10000 draws and 10000 tune steps...\nHyperparameter Acceptance Rate: 15.88%"
+    "text": "3.2 Gibbs sampler\n\n\nStarting Gibbs Sampler for 10000 draws and 10000 tune steps...\nTuning: 1000/10000\nTuning: 2000/10000\nTuning: 3000/10000\nTuning: 4000/10000\nTuning: 5000/10000\nTuning: 6000/10000\nTuning: 7000/10000\nTuning: 8000/10000\nTuning: 9000/10000\nTuning: 10000/10000\nSampling: 1000/10000\nSampling: 2000/10000\nSampling: 3000/10000\nSampling: 4000/10000\nSampling: 5000/10000\nSampling: 6000/10000\nSampling: 7000/10000\nSampling: 8000/10000\nSampling: 9000/10000\nSampling: 10000/10000\nHyperparameter Acceptance Rate: 15.88%\nSaved Gibbs checkpoint: bvcm_gibbs_validation_checkpoint.npz\nPosterior means: length scale=45.844508, amplitude=0.106108, noise variance=0.00022890"
   },
   {
     "objectID": "notebooks/bvcm.html#posterior-visualization",
@@ -389,7 +389,7 @@
     "href": "notebooks/bvcm.html#validation-results-summary",
     "title": "Bayesian Varying Coefficient Model (BVCM) for Skin Reflectance Spectra",
     "section": "6.5 Validation results summary",
-    "text": "6.5 Validation results summary\n\n\n\n\n\n\n\n\n\n\n\n\n======================================================================\nTWO-STAGE VALIDATION FILTER SUMMARY\n======================================================================\n\nStage 1: Chromophore Index Validation (GMM 95% CI)\n  Input spectra: 3624\n  Valid (within GMM): 1481 (40.9%)\n  Invalid (outside GMM): 2143 (59.1%)\n\nStage 2: Spectral Plausibility Assessment (Mahalanobis Distance)\n  Input (from Stage 1): 1481\n  Threshold: 9.41 (95th percentile from training)\n  Valid (plausible spectra): 986 (66.6%)\n  Invalid (implausible spectra): 495 (33.4%)\n\nOverall Filter Performance:\n  Total input: 3624\n  Total valid: 986 (27.2%)\n  Total rejected: 2638 (72.8%)\n\nChromophore Index Statistics (Valid Spectra):\n  Melanin Index: [20.37, 97.38]\n  Erythema Index: [16.32, 49.44]\n======================================================================"
+    "text": "6.5 Validation results summary\n\n\n\n\n\n\n\n\n\n\n\n\n======================================================================\nTWO-STAGE VALIDATION FILTER SUMMARY\n======================================================================\n\nStage 1: Chromophore Index Validation (GMM 95% CI)\n  Input spectra: 4000\n  Valid (within GMM): 1167 (29.2%)\n  Invalid (outside GMM): 2833 (70.8%)\n\nStage 2: Spectral Plausibility Assessment (Mahalanobis Distance)\n  Input (from Stage 1): 1167\n  Threshold: 9.41 (95th percentile from training)\n  Valid (plausible spectra): 733 (62.8%)\n  Invalid (implausible spectra): 434 (37.2%)\n\nOverall Filter Performance:\n  Total input: 4000\n  Total valid: 733 (18.3%)\n  Total rejected: 3267 (81.7%)\n\nChromophore Index Statistics (Valid Spectra):\n  Melanin Index: [20.85, 97.15]\n  Erythema Index: [16.79, 49.53]\n======================================================================\n\n\n\n\nValidation results saved to D:\\THUCloud\\Seafile\\SkinSpectra\\SkinSim_Quarto\\output\\corrected_validation"
   },
   {
     "objectID": "notebooks/bioskin_note.html",
@@ -544,5 +544,68 @@
     "title": "Bayesian Varying Coefficient Model (BVCM) for Skin Reflectance Spectra",
     "section": "6.4 Meta spectra validation overview",
     "text": "6.4 Meta spectra validation overview"
+  },
+  {
+    "objectID": "notebooks/bvcm.html#pca-comparison-of-issa-bvcm-predictions-and-bioskin-spectra",
+    "href": "notebooks/bvcm.html#pca-comparison-of-issa-bvcm-predictions-and-bioskin-spectra",
+    "title": "Bayesian Varying Coefficient Model (BVCM) for Skin Reflectance Spectra",
+    "section": "6.1 PCA comparison of ISSA, BVCM predictions, and BioSkin spectra",
+    "text": "6.1 PCA comparison of ISSA, BVCM predictions, and BioSkin spectra\nTo compare spectral variation on a common basis, we fit PCA to the real ISSA face spectra and project the BVCM population-level predictions and the BioSkin bioskin_spectra onto the resulting components. This reference-based approach keeps the axes directly comparable: overlap with the ISSA score distribution indicates that a dataset reproduces the dominant empirical modes of variation, whereas displacement or dispersion outside the ISSA 95% score ellipse identifies systematic differences. BioSkin reflectance is already converted to percentages when loaded, so all three inputs use the same scale.\n\n\n\n\n\n\n\n \nDataset\nn\nPC1 mean\nPC1 SD\nPC2 mean\nPC2 SD\nCentroid distance from ISSA\nWithin ISSA 95% region (%)\n\n\n\n\n0\nReal ISSA face data\n7923\n0.00\n41.01\n0.00\n8.42\n0.00\n93.4\n\n\n1\nBVCM predicted reflectance\n3000\n0.53\n39.31\n0.43\n7.80\n0.05\n95.4\n\n\n2\nBioSkin spectra\n4000\n-107.53\n51.16\n-5.51\n10.86\n2.70\n22.8\n\n\n\n\n\nThe first two ISSA components explain 98.55% of spectral variance.\nCorrected BioSkin spectra within the ISSA PC1-PC2 95% score ellipse: 22.78%.\nThis PCA comparison is descriptive and is separate from the two-stage validation decision."
+  },
+  {
+    "objectID": "notebooks/bvcm.html#bioskin-spectra-validation-overview",
+    "href": "notebooks/bvcm.html#bioskin-spectra-validation-overview",
+    "title": "Bayesian Varying Coefficient Model (BVCM) for Skin Reflectance Spectra",
+    "section": "6.4 BioSkin spectra validation overview",
+    "text": "6.4 BioSkin spectra validation overview"
+  },
+  {
+    "objectID": "analysis/bioskin_validation.html",
+    "href": "analysis/bioskin_validation.html",
+    "title": "BioSkin validation",
+    "section": "",
+    "text": "We evaluate 4,000 BioSkin-generated spectra against the International Skin Spectra Archive (ISSA) using MI–EI screening followed by a conditional spectral assessment. 733 spectra (18.325%) pass both stages.\nThe executed BVCM notebook contains the complete analysis. The rerun report documents the input correction, parameter pairing, and changes relative to the previous dataset."
+  },
+  {
+    "objectID": "analysis/bioskin_validation.html#validation-results",
+    "href": "analysis/bioskin_validation.html#validation-results",
+    "title": "BioSkin validation",
+    "section": "1 Validation results",
+    "text": "1 Validation results\n\n\n\n\n\n\n\n\nOutcome\nNumber of spectra\nPercentage and denominator\n\n\n\n\nCandidates\n4,000\n100% of all candidates\n\n\nPassed MI–EI screening\n1,167\n29.175% of 4,000\n\n\nRejected at Stage 1\n2,833\n70.825% of 4,000\n\n\nPassed conditional spectral assessment\n733\n62.8% of 1,167 Stage 1 passes\n\n\nRejected at Stage 2\n434\n37.2% of 1,167 Stage 1 passes\n\n\nPassed both stages\n733\n18.325% of 4,000\n\n\nRejected overall\n3,267\n81.675% of 4,000\n\n\n\nStage 2 is evaluated only after a Stage 1 pass. Its Mahalanobis-distance cutoff is 9.4114149808, the 95th percentile of the ISSA training distances. Rejection indicates inconsistency with this empirical reference under the chosen criteria; it does not establish biological implausibility.\n\n\n\nBioSkin spectra before and after two-stage validation. All panels share wavelength, reflectance, and melanin-index color scales."
+  },
+  {
+    "objectID": "analysis/bioskin_validation.html#physical-parameters",
+    "href": "analysis/bioskin_validation.html#physical-parameters",
+    "title": "BioSkin validation",
+    "section": "2 Physical parameters",
+    "text": "2 Physical parameters\nThe inputs comprise melanin volume fraction, blood volume fraction, epidermal thickness, melanin type ratio, and blood oxygenation.\n\n\n\nPhysical parameter distributions for 4,000 BioSkin samples. Thickness is expressed in micrometers; the other parameters are fractions."
+  },
+  {
+    "objectID": "analysis/bioskin_validation.html#pca-comparison",
+    "href": "analysis/bioskin_validation.html#pca-comparison",
+    "title": "BioSkin validation",
+    "section": "3 PCA comparison",
+    "text": "3 PCA comparison\nPCA is fitted to ISSA only. BioSkin spectra and BVCM population predictions are projected using the same ISSA mean and loadings. The first two components explain 98.6% of ISSA variance; 22.775% of BioSkin spectra fall within the nominal 95% Gaussian ISSA score ellipse. This comparison is descriptive and is separate from the two-stage validation decision.\n\n\n\nCommon ISSA PCA basis for observed spectra, BVCM predictions, and BioSkin spectra. Gray points show ISSA; dashed lines show its nominal Gaussian score ellipse."
+  },
+  {
+    "objectID": "analysis/bioskin_validation.html#reproducibility",
+    "href": "analysis/bioskin_validation.html#reproducibility",
+    "title": "BioSkin validation",
+    "section": "4 Reproducibility",
+    "text": "4 Reproducibility\nThe reference uses 7,923 cleaned facial spectra, split into 6,338 training and 1,585 test records. All 41 notebook code cells completed, and independent Cholesky calculations verified the 4,000 exported decisions and distances.\n\nPer-spectrum validation results (CSV)\nValidation summary and provenance (JSON)\nPCA comparison (CSV)\nStandalone rerun report (HTML)\nSource code and data on GitHub"
+  },
+  {
+    "objectID": "analysis/rerun_report.html",
+    "href": "analysis/rerun_report.html",
+    "title": "Validation rerun report",
+    "section": "",
+    "text": "The validation rerun retains 733 of 4,000 spectra (18.325%), compared with 734 in the previous dataset evaluated against the same fitted ISSA reference. All 4,000 sample pairs were verified after swapping zero-based network input slots 3 and 4.\n539 samples pass in both versions, 195 previously retained samples now fail, and 194 newly pass. Of the 195 lost acceptances, 11 fail MI–EI screening and 184 fail the conditional spectral assessment.\nThe full report includes the numerical results, pairing checks, explanations of changed decisions, model settings, and limitations:\nRead the full rerun report"
+  },
+  {
+    "objectID": "analysis/rerun_report.html#related-analysis",
+    "href": "analysis/rerun_report.html#related-analysis",
+    "title": "Validation rerun report",
+    "section": "1 Related analysis",
+    "text": "1 Related analysis\n\nBioSkin validation results and publication figures\nExecuted BVCM notebook\nPaired outcomes (CSV)\nParameter-pairing audit (JSON)\n\nRejection means inconsistency with the ISSA reference under the specified criteria. Further work is needed to classify rejection patterns and assess whether they reflect gaps in empirical coverage."
   }
 ]

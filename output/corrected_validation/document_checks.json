@@ -1,0 +1,25 @@
+{
+  "status": "passed",
+  "latex_compiled": false,
+  "section_files_checked": 5,
+  "graphic_references_checked": 13,
+  "citations_checked": 9,
+  "figure_exports_checked": 20,
+  "embedded_figure_fonts": [
+    "BAKFBY+DejaVuSans",
+    "BSDRUZ+DejaVuSans",
+    "CDNBDH+DejaVuSans",
+    "CESMNC+DejaVuSans",
+    "DSWGTF+DejaVuSans",
+    "EKJKAO+DejaVuSans",
+    "EOBGKI+DejaVuSans",
+    "ERYDWI+DejaVuSans-Oblique",
+    "FHDIUG+DejaVuSans",
+    "FUUVLM+DejaVuSans",
+    "GKDKGK+DejaVuSans",
+    "HIHMMM+DejaVuSans",
+    "OWREKF+DejaVuSans"
+  ],
+  "report_figures_embedded_html": 4,
+  "report_figures_embedded_docx": 4
+}

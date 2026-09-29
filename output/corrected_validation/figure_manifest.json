@@ -1,0 +1,143 @@
+{
+  "dpi": 600,
+  "font": "DejaVu Sans",
+  "exports": [
+    {
+      "file": "output\\corrected_validation\\figures\\rerun_outcomes_and_transitions.pdf",
+      "sha256": "a3e13a8ffabbc80c528ddfdbe93b192b8d5655a75c49766897113522bc0366bc",
+      "width_inches": 7.086614173228347,
+      "height_inches": 3.15
+    },
+    {
+      "file": "output\\corrected_validation\\figures\\rerun_outcomes_and_transitions.png",
+      "sha256": "4ca86d0d253eab7e741c160c90e39eb3eb667ee66aa21fbffc06f62c9ec37b5b",
+      "width_inches": 7.086614173228347,
+      "height_inches": 3.15
+    },
+    {
+      "file": "output\\corrected_validation\\figures\\rerun_changed_acceptance.pdf",
+      "sha256": "14f8e2459ad9e4ac949c7b84f8cba0b4ea0eca4678213119fe3fc7af97a3b9f8",
+      "width_inches": 7.086614173228347,
+      "height_inches": 5.0
+    },
+    {
+      "file": "output\\corrected_validation\\figures\\rerun_changed_acceptance.png",
+      "sha256": "2768652dfd28adc8c1bb3b6bfa536f386ccb98a7ea72d0f893ca1a0503c07f68",
+      "width_inches": 7.086614173228347,
+      "height_inches": 5.0
+    },
+    {
+      "file": "figures\\melanin_vs_erythema_index_on_face_sites.pdf",
+      "sha256": "09543b8eb5e3dd0f7accd914a907c557e3fc161141694389a826f7a55180adeb",
+      "width_inches": 5.5,
+      "height_inches": 3.6
+    },
+    {
+      "file": "figures\\melanin_vs_erythema_index_on_face_sites.png",
+      "sha256": "a64529c168676ed68146d096a956a9f8e21fea083175ee51269ddc1350936db4",
+      "width_inches": 5.5,
+      "height_inches": 3.6
+    },
+    {
+      "file": "figures\\gmm_mi_ei_confidence_regions.pdf",
+      "sha256": "654d72cbd8256016a50df6da0c019694a9478d5c5c8120d6add0353d4b350126",
+      "width_inches": 5.5,
+      "height_inches": 2.7
+    },
+    {
+      "file": "figures\\gmm_mi_ei_confidence_regions.png",
+      "sha256": "83c02a840bdd94a38c95ce5296a7a9c00560bca8d2094a8fb721bfa6a78f4e19",
+      "width_inches": 5.5,
+      "height_inches": 2.7
+    },
+    {
+      "file": "figures\\beta_curves_estimation.pdf",
+      "sha256": "bf823b2b31bed826a10086d507ed634a98e58e544b4af1bc67ee0a8e770162bd",
+      "width_inches": 5.5,
+      "height_inches": 2.25
+    },
+    {
+      "file": "figures\\beta_curves_estimation.png",
+      "sha256": "d51274fef2ebd373baf781328ffc02b1d253d6ecd0ea1b12b3b53d807cce12ba",
+      "width_inches": 5.5,
+      "height_inches": 2.25
+    },
+    {
+      "file": "figures\\bvcm_reflectance_predictions_for_different_mi_percentiles_given_ei.pdf",
+      "sha256": "a2caa2df613a328f4c2ff1c98287a3853d03aba2b118435acf2e3d22dd64739e",
+      "width_inches": 5.5,
+      "height_inches": 2.6
+    },
+    {
+      "file": "figures\\bvcm_reflectance_predictions_for_different_mi_percentiles_given_ei.png",
+      "sha256": "c7fea6c2500475af8fb4f19c56b9ddcf01aa47779fb3d81db27e4761bccd53a1",
+      "width_inches": 5.5,
+      "height_inches": 2.6
+    },
+    {
+      "file": "figures\\predicted_vs_issa_test_spectra.pdf",
+      "sha256": "e562f759c1782dd7c2a77b959aebdf58ca4789b4d40994ffa48b926ceaea975d",
+      "width_inches": 5.5,
+      "height_inches": 2.75
+    },
+    {
+      "file": "figures\\predicted_vs_issa_test_spectra.png",
+      "sha256": "e0e85a30dba68c53ca6d8cb8e46356c29de1652c6a7e628010a125ad461b69a0",
+      "width_inches": 5.5,
+      "height_inches": 2.75
+    },
+    {
+      "file": "figures\\bioskin_properties_distribution.pdf",
+      "sha256": "9208359c440647df0dd3c673bb8e430f66288d4cc41758a11ffe2521a7d51410",
+      "width_inches": 5.5,
+      "height_inches": 3.65
+    },
+    {
+      "file": "figures\\bioskin_properties_distribution.png",
+      "sha256": "5dcaca09738922b69236318cd8b77460df548933441e759d5f6c77a06edf007f",
+      "width_inches": 5.5,
+      "height_inches": 3.65
+    },
+    {
+      "file": "figures\\bioskin_spectra_validation_overview.pdf",
+      "sha256": "51a976ae1e2cd7723a3861a61a899f20ce76de7ee55f37f9fb78bf890c7207b3",
+      "width_inches": 5.5,
+      "height_inches": 2.65
+    },
+    {
+      "file": "figures\\bioskin_spectra_validation_overview.png",
+      "sha256": "ba325f07737f66fef882ae8f33900d57a99ff41ea9ee146ab3dc672b6e5a6d48",
+      "width_inches": 5.5,
+      "height_inches": 2.65
+    },
+    {
+      "file": "figures\\pca_issa_bvcm_bioskin_comparison.pdf",
+      "sha256": "2368630923e15c6ab65695ab772715fa58444677620d6ab74ef1fc0098c2406a",
+      "width_inches": 5.5,
+      "height_inches": 2.45
+    },
+    {
+      "file": "figures\\pca_issa_bvcm_bioskin_comparison.png",
+      "sha256": "4ae1a012773e6c85bb585629a98a12ffc535b58c970df8e3af690e98b7883cdc",
+      "width_inches": 5.5,
+      "height_inches": 2.45
+    }
+  ],
+  "pca_coverage_percent": [
+    93.39896503849552,
+    95.39999999999999,
+    22.775000000000002
+  ],
+  "reflectance_colormap": {
+    "colors": [
+      "#fbf7ec",
+      "#a15c33",
+      "#42230c"
+    ],
+    "mi_limits": [
+      20,
+      150
+    ],
+    "clip": true
+  }
+}

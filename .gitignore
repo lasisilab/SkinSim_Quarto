@@ -2,6 +2,10 @@
 **/*.quarto_ipynb
 /.vscode/
 /_freeze/
+/.venv/
+/.runtime/
+__pycache__/
+/output/corrected_validation/*.docx
 
 # macOS
 .DS_Store
