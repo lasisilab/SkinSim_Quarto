@@ -25,7 +25,9 @@ def evaluate(spectra, reference, stage1_threshold):
         )
         distances.append(np.linalg.norm(standardized, axis=0))
     minimum_distance = np.min(distances, axis=0)
-    stage1 = minimum_distance <= stage1_threshold
+    # One threshold per GMM component (a scalar applies to all components).
+    thresholds = np.broadcast_to(np.asarray(stage1_threshold, dtype=float), (len(distances),))
+    stage1 = np.any(np.array(distances) <= thresholds[:, None], axis=0)
     predictions = np.column_stack((np.ones(len(spectra)), covariates)) @ reference['post_betas_mean']
     proportions = spectra / 100
     residuals = np.log(proportions / (1 - proportions)) - predictions

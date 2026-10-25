@@ -333,7 +333,7 @@
     "href": "notebooks/bvcm.html#chromophore-distribution-modeling",
     "title": "Bayesian Varying Coefficient Model (BVCM) for Skin Reflectance Spectra",
     "section": "2.3 Chromophore distribution modeling",
-    "text": "2.3 Chromophore distribution modeling\nThe relationship between melanin index and erythema index is shown as:\n\n\n\n\n\n\n\n\n\nWe apply a Gaussian mixture model with 5 components to approximate the distribution of melanin and erythema indices in the population. This allows us to identify the realistic combinations of these chromophore indices."
+    "text": "2.3 Chromophore distribution modeling\nThe relationship between melanin index and erythema index is shown as:\n\n\n\n\n\n\n\n\n\nWe apply a Gaussian mixture model with 5 components to approximate the distribution of melanin and erythema indices in the population. This allows us to identify the realistic combinations of these chromophore indices. The EM fit has several nearly equivalent optima, so the fitted mixture is saved to output/corrected_validation/gmm_mi_ei_reference.npz and reused, which keeps Stage 1 fixed across runs.\nFor Stage 1, each spectrum is assigned to its most probable component. The acceptance region of component \\(k\\) is the Mahalanobis ellipse whose radius is the 99th percentile of the distances of the ISSA spectra assigned to \\(k\\).\n\n\nLoaded saved GMM: gmm_mi_ei_reference.npz\nStage 1 thresholds by component: [2.656 2.783 3.552 2.66  2.941]\nISSA facial spectra inside at least one region: 99.4%"
   },
   {
     "objectID": "notebooks/bvcm.html#preprocess-data",
@@ -347,7 +347,7 @@
     "href": "notebooks/bvcm.html#gibbs-sampler",
     "title": "Bayesian Varying Coefficient Model (BVCM) for Skin Reflectance Spectra",
     "section": "3.2 Gibbs sampler",
-    "text": "3.2 Gibbs sampler\n\n\nStarting Gibbs Sampler for 10000 draws and 10000 tune steps...\nTuning: 1000/10000\nTuning: 2000/10000\nTuning: 3000/10000\nTuning: 4000/10000\nTuning: 5000/10000\nTuning: 6000/10000\nTuning: 7000/10000\nTuning: 8000/10000\nTuning: 9000/10000\nTuning: 10000/10000\nSampling: 1000/10000\nSampling: 2000/10000\nSampling: 3000/10000\nSampling: 4000/10000\nSampling: 5000/10000\nSampling: 6000/10000\nSampling: 7000/10000\nSampling: 8000/10000\nSampling: 9000/10000\nSampling: 10000/10000\nHyperparameter Acceptance Rate: 15.88%\nSaved Gibbs checkpoint: bvcm_gibbs_validation_checkpoint.npz\nPosterior means: length scale=45.844508, amplitude=0.106108, noise variance=0.00022890"
+    "text": "3.2 Gibbs sampler\n\n\nLoaded compatible Gibbs checkpoint: bvcm_gibbs_validation_checkpoint.npz\nPosterior means: length scale=45.844508, amplitude=0.106108, noise variance=0.00022890"
   },
   {
     "objectID": "notebooks/bvcm.html#posterior-visualization",
@@ -374,22 +374,22 @@
     "objectID": "notebooks/bvcm.html#stage-1-chromophore-index-validation",
     "href": "notebooks/bvcm.html#stage-1-chromophore-index-validation",
     "title": "Bayesian Varying Coefficient Model (BVCM) for Skin Reflectance Spectra",
-    "section": "6.2 Stage 1: Chromophore index validation",
-    "text": "6.2 Stage 1: Chromophore index validation"
+    "section": "6.3 Stage 1: Chromophore index validation",
+    "text": "6.3 Stage 1: Chromophore index validation"
   },
   {
     "objectID": "notebooks/bvcm.html#stage-2-spectral-plausibility-assessment",
     "href": "notebooks/bvcm.html#stage-2-spectral-plausibility-assessment",
     "title": "Bayesian Varying Coefficient Model (BVCM) for Skin Reflectance Spectra",
-    "section": "6.3 Stage 2: Spectral plausibility assessment",
-    "text": "6.3 Stage 2: Spectral plausibility assessment"
+    "section": "6.4 Stage 2: Spectral plausibility assessment",
+    "text": "6.4 Stage 2: Spectral plausibility assessment"
   },
   {
     "objectID": "notebooks/bvcm.html#validation-results-summary",
     "href": "notebooks/bvcm.html#validation-results-summary",
     "title": "Bayesian Varying Coefficient Model (BVCM) for Skin Reflectance Spectra",
-    "section": "6.5 Validation results summary",
-    "text": "6.5 Validation results summary\n\n\n\n\n\n\n\n\n\n\n\n\n======================================================================\nTWO-STAGE VALIDATION FILTER SUMMARY\n======================================================================\n\nStage 1: Chromophore Index Validation (GMM 95% CI)\n  Input spectra: 4000\n  Valid (within GMM): 1167 (29.2%)\n  Invalid (outside GMM): 2833 (70.8%)\n\nStage 2: Spectral Plausibility Assessment (Mahalanobis Distance)\n  Input (from Stage 1): 1167\n  Threshold: 9.41 (95th percentile from training)\n  Valid (plausible spectra): 733 (62.8%)\n  Invalid (implausible spectra): 434 (37.2%)\n\nOverall Filter Performance:\n  Total input: 4000\n  Total valid: 733 (18.3%)\n  Total rejected: 3267 (81.7%)\n\nChromophore Index Statistics (Valid Spectra):\n  Melanin Index: [20.85, 97.15]\n  Erythema Index: [16.79, 49.53]\n======================================================================\n\n\n\n\nValidation results saved to D:\\THUCloud\\Seafile\\SkinSpectra\\SkinSim_Quarto\\output\\corrected_validation"
+    "section": "6.6 Validation results summary",
+    "text": "6.6 Validation results summary\n\n\n\n\n\n\n\n\n\n\n\n\n======================================================================\nTWO-STAGE VALIDATION FILTER SUMMARY\n======================================================================\n\nStage 1: Chromophore Index Validation (GMM 99th-percentile regions)\n  Input spectra: 4000\n  Valid (within GMM): 1745 (43.6%)\n  Invalid (outside GMM): 2255 (56.4%)\n\nStage 2: Spectral Plausibility Assessment (Mahalanobis Distance)\n  Input (from Stage 1): 1745\n  Threshold: 9.35 (in-sample 95th percentile, all ISSA facial spectra)\n  Valid (plausible spectra): 992 (56.8%)\n  Invalid (implausible spectra): 753 (43.2%)\n\nOverall Filter Performance:\n  Total input: 4000\n  Total valid: 992 (24.8%)\n  Total rejected: 3008 (75.2%)\n\nChromophore Index Statistics (Valid Spectra):\n  Melanin Index: [20.85, 97.97]\n  Erythema Index: [16.79, 56.36]\n======================================================================\n\n\n\n\nValidation results saved to D:\\THUCloud\\Seafile\\SkinSpectra\\SkinSim_Quarto\\output\\corrected_validation"
   },
   {
     "objectID": "notebooks/bioskin_note.html",
@@ -549,15 +549,15 @@
     "objectID": "notebooks/bvcm.html#pca-comparison-of-issa-bvcm-predictions-and-bioskin-spectra",
     "href": "notebooks/bvcm.html#pca-comparison-of-issa-bvcm-predictions-and-bioskin-spectra",
     "title": "Bayesian Varying Coefficient Model (BVCM) for Skin Reflectance Spectra",
-    "section": "6.1 PCA comparison of ISSA, BVCM predictions, and BioSkin spectra",
-    "text": "6.1 PCA comparison of ISSA, BVCM predictions, and BioSkin spectra\nTo compare spectral variation on a common basis, we fit PCA to the real ISSA face spectra and project the BVCM population-level predictions and the BioSkin bioskin_spectra onto the resulting components. This reference-based approach keeps the axes directly comparable: overlap with the ISSA score distribution indicates that a dataset reproduces the dominant empirical modes of variation, whereas displacement or dispersion outside the ISSA 95% score ellipse identifies systematic differences. BioSkin reflectance is already converted to percentages when loaded, so all three inputs use the same scale.\n\n\n\n\n\n\n\n \nDataset\nn\nPC1 mean\nPC1 SD\nPC2 mean\nPC2 SD\nCentroid distance from ISSA\nWithin ISSA 95% region (%)\n\n\n\n\n0\nReal ISSA face data\n7923\n0.00\n41.01\n0.00\n8.42\n0.00\n93.4\n\n\n1\nBVCM predicted reflectance\n3000\n0.53\n39.31\n0.43\n7.80\n0.05\n95.4\n\n\n2\nBioSkin spectra\n4000\n-107.53\n51.16\n-5.51\n10.86\n2.70\n22.8\n\n\n\n\n\nThe first two ISSA components explain 98.55% of spectral variance.\nCorrected BioSkin spectra within the ISSA PC1-PC2 95% score ellipse: 22.78%.\nThis PCA comparison is descriptive and is separate from the two-stage validation decision."
+    "section": "6.2 PCA comparison of ISSA, BVCM predictions, and BioSkin spectra",
+    "text": "6.2 PCA comparison of ISSA, BVCM predictions, and BioSkin spectra\nTo compare spectral variation on a common basis, we fit PCA to the real ISSA face spectra and project the BVCM population-level predictions and the BioSkin bioskin_spectra onto the resulting components. This reference-based approach keeps the axes directly comparable: overlap with the ISSA score distribution indicates that a dataset reproduces the dominant empirical modes of variation, whereas displacement or dispersion outside the ISSA 95% score ellipse identifies systematic differences. BioSkin reflectance is already converted to percentages when loaded, so all three inputs use the same scale.\n\n\n\n\n\n\n\n \nDataset\nn\nPC1 mean\nPC1 SD\nPC2 mean\nPC2 SD\nCentroid distance from ISSA\nWithin ISSA 95% region (%)\n\n\n\n\n0\nReal ISSA face data\n7923\n0.00\n41.01\n0.00\n8.42\n0.00\n93.4\n\n\n1\nBVCM predicted reflectance\n3000\n0.53\n39.31\n0.43\n7.80\n0.05\n95.4\n\n\n2\nBioSkin spectra\n4000\n-107.53\n51.16\n-5.51\n10.86\n2.70\n22.8\n\n\n\n\n\nThe first two ISSA components explain 98.55% of spectral variance.\nCorrected BioSkin spectra within the ISSA PC1-PC2 95% score ellipse: 22.78%.\nThis PCA comparison is descriptive and is separate from the two-stage validation decision."
   },
   {
     "objectID": "notebooks/bvcm.html#bioskin-spectra-validation-overview",
     "href": "notebooks/bvcm.html#bioskin-spectra-validation-overview",
     "title": "Bayesian Varying Coefficient Model (BVCM) for Skin Reflectance Spectra",
-    "section": "6.4 BioSkin spectra validation overview",
-    "text": "6.4 BioSkin spectra validation overview"
+    "section": "6.5 BioSkin spectra validation overview",
+    "text": "6.5 BioSkin spectra validation overview"
   },
   {
     "objectID": "analysis/bioskin_validation.html",
@@ -614,5 +614,12 @@
     "title": "Shape Analysis of Skin Reflectance Spectra",
     "section": "2.5 Comparison of non-facial sites with the face",
     "text": "2.5 Comparison of non-facial sites with the face\nThe manuscript uses the palm as the single non-facial comparison site. To support this choice, we compare every non-facial ISSA site with the pooled facial sites on three criteria:\n\nSpectral shape: proportions of W-shaped, U-shaped, and increasing spectra after derivative-based outlier removal, applied separately to the pooled facial sites and to each non-facial site, as above.\nCoupling to facial pigmentation: among participants measured at both a given site and the face, the slope and Pearson correlation of the site’s melanin index on the participant’s mean facial melanin index. This criterion uses all records before outlier removal.\nSample size: the number of spectra after outlier removal and the number of contributing component datasets.\n\nParticipants are identified by (dataset, subject) pairs.\n\n\n\n\n\n\n\n\n\nSpectra (cleaned)\nDatasets\nW-shape\nU-shape\nIncreasing\nPaired participants (all records)\nMI slope on face (all records)\nMI correlation with face (all records)\n\n\nSite\n\n\n\n\n\n\n\n\n\n\n\n\nFace (pooled)\n7923\n11\n0.194\n0.518\n0.288\nNaN\nNaN\nNaN\n\n\nBack of Hand\n1694\n10\n0.011\n0.539\n0.450\n1715.0\n0.917\n0.848\n\n\nInner arm\n1666\n9\n0.032\n0.597\n0.370\n1690.0\n0.653\n0.774\n\n\nNeck\n1158\n7\n0.075\n0.383\n0.541\n876.0\n1.008\n0.935\n\n\nOuter arm\n1609\n9\n0.022\n0.351\n0.626\n1630.0\n0.892\n0.793\n\n\nPalm\n769\n6\n0.698\n0.261\n0.040\n777.0\n0.418\n0.680\n\n\nRing finger\n242\n3\n0.884\n0.103\n0.012\n243.0\n0.619\n0.546\n\n\n\n\n\n\n\nThe palm differs most clearly from the face among the well-sampled non-facial sites:\n\nW-shaped spectra account for 69.8% of palm spectra, compared with 19.4% of the pooled facial spectra and 1.1–7.5% at the back of the hand, arms, and neck. These hair-bearing sites are dominated by U-shaped and increasing spectra.\nPalm pigmentation is the least coupled to facial pigmentation: the palm melanin index increases by 0.42 units per unit of mean facial melanin index (correlation 0.68, 777 participants), whereas the slopes for the other non-facial sites range from 0.62 to 1.01.\nThe ring finger shows a similar contrast in shape, but it has only 242 cleaned spectra from three component datasets, compared with 769 palm spectra from six."
+  },
+  {
+    "objectID": "notebooks/bvcm.html#validation-reference-bvcm-refitted-to-all-issa-facial-spectra",
+    "href": "notebooks/bvcm.html#validation-reference-bvcm-refitted-to-all-issa-facial-spectra",
+    "title": "Bayesian Varying Coefficient Model (BVCM) for Skin Reflectance Spectra",
+    "section": "6.1 Validation reference: BVCM refitted to all ISSA facial spectra",
+    "text": "6.1 Validation reference: BVCM refitted to all ISSA facial spectra\nThe training-split fit above is used only for model evaluation. For validation, the BVCM is refitted to all cleaned facial spectra with the same priors and sampler settings, and the Stage 2 threshold is the in-sample 95th percentile of their Mahalanobis distances. In-sample calibration is justified by the stability of the fit: the population-level RMSE on the held-out test spectra is essentially equal to that on the training spectra.\n\n\nLoaded compatible full-data Gibbs checkpoint: bvcm_gibbs_full_reference_checkpoint.npz\nFull-data posterior means: length scale=45.383482, amplitude=0.108663, noise variance=0.00023009\nAcceptance rate: 13.55%\nPopulation-level RMSE on all 7923 spectra: full-data fit 1.417, training-split fit 1.415\n\n\n\n6.1.1 Corrected BioSkin inputs\nThis section uses Carlos’s corrected 4,000-spectrum dataset in bioskin_data/. The network-ready CSV places melanin type ratio in column 4 and blood oxygenation in column 5 (one-based). The physical-units CSV has its own named column order. Parameter plots use the physical values, with thickness expressed in micrometres.\nThe input loader checks row counts, parameter scaling and slot order, finite reflectance fractions, and exact wavelength alignment. Reflectance is converted to percentages once. The existing GMM and BVCM validation criteria are unchanged. Execute the notebook with the ISSA workbook available to obtain updated validation results.\n\n\nLoaded 4,000 corrected BioSkin spectra at 31 ISSA wavelengths.\nReflectance range: 0.6830% to 72.5010%\n\n\n\n\n\n\n\n\n\n\n\ncount\nmean\nstd\nmin\n25%\n50%\n75%\nmax\n\n\n\n\nMelanin volume fraction\n4000.0\n0.214655\n0.124476\n0.001223\n0.106036\n0.213578\n0.324239\n0.429899\n\n\nBlood volume fraction\n4000.0\n0.099230\n0.057012\n0.001063\n0.049932\n0.099178\n0.147731\n0.199995\n\n\nThickness (micrometres)\n4000.0\n150.322165\n57.526798\n50.002600\n99.782725\n151.557250\n199.059950\n249.893200\n\n\nMelanin type ratio\n4000.0\n0.725285\n0.043141\n0.650019\n0.687451\n0.726239\n0.762529\n0.799992\n\n\nBlood oxygenation\n4000.0\n0.950499\n0.029105\n0.900002\n0.925313\n0.950867\n0.975665\n0.999956"
   }
 ]

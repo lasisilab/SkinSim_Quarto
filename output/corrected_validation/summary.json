@@ -10,7 +10,7 @@
   "posterior_mean_noise_variance": 0.0002288968832305805,
   "stage2_reference": "BVCM refitted to all cleaned ISSA facial spectra",
   "stage2_reference_spectra": 7923,
-  "stage2_reference_fit_source": "refitted_current_gibbs_model",
+  "stage2_reference_fit_source": "compatible_gibbs_checkpoint",
   "stage2_reference_checkpoint_file": "bvcm_gibbs_full_reference_checkpoint.npz",
   "stage2_reference_checkpoint_sha256": "580636711ee588b23acaca4404e815d972eef870746fd3706dcfb496fc053445",
   "stage2_reference_fit_acceptance_rate": 0.13555,
@@ -18,7 +18,7 @@
   "stage2_reference_posterior_mean_amplitude": 0.10866327627210584,
   "stage2_reference_posterior_mean_noise_variance": 0.00023008993804659076,
   "stage2_threshold_calibration": "in-sample 95th percentile over all reference spectra",
-  "completed_at_utc": "2026-10-22T09:51:54.827882+00:00",
+  "completed_at_utc": "2026-10-25T13:23:20.702507+00:00",
   "source_files": {
     "spectra": {
       "name": "corrected_spectral_reflectance_smoothed.csv",
@@ -72,27 +72,35 @@
   "training_spectra": 6338,
   "test_spectra": 1585,
   "candidate_spectra": 4000,
-  "stage1_pass": 1167,
-  "stage1_rejected": 2833,
-  "stage2_pass": 741,
-  "stage2_rejected": 426,
-  "passed_both": 741,
-  "rejected_overall": 3259,
-  "passed_both_percent": 18.525,
-  "stage1_threshold": 2.447746830680816,
+  "stage1_pass": 1745,
+  "stage1_rejected": 2255,
+  "stage2_pass": 992,
+  "stage2_rejected": 753,
+  "passed_both": 992,
+  "rejected_overall": 3008,
+  "passed_both_percent": 24.8,
+  "stage1_threshold": [
+    2.6563683425269207,
+    2.782813574795828,
+    3.5523924235612916,
+    2.659881608359737,
+    2.9408252966751722
+  ],
+  "stage1_threshold_calibration": "99th percentile of Mahalanobis distances within each GMM component (most probable component)",
+  "gmm_file": "gmm_mi_ei_reference.npz",
   "stage2_threshold": 9.351679676572447,
   "retained_MI_range": [
     20.85223337812222,
-    97.15049995211432
+    97.9697732367738
   ],
   "retained_EI_range": [
     16.785632971077018,
-    49.53371183930212
+    56.35806369459967
   ],
   "bioskin_pca_coverage_percent": 22.775000000000002,
   "python_version": "3.12.14",
   "package_versions": {
-    "numpy": "2.4.6",
+    "numpy": "2.5.3",
     "pandas": "3.0.6",
     "scipy": "1.18.1",
     "scikit-learn": "1.9.1",

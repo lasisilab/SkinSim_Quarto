@@ -101,12 +101,14 @@ def panel(ax, letter, title):
     ax.set_title(f'({letter})  {title}', loc='left', pad=8)
 
 
-def ellipse(ax, mean, cov, **kwargs):
+def ellipse(ax, mean, cov, radius=None, **kwargs):
+    # radius is a Mahalanobis distance; the default is the 95% chi-squared contour.
+    radius = np.sqrt(chi2.ppf(.95, 2)) if radius is None else radius
     vals, vecs = np.linalg.eigh(cov)
     order = vals.argsort()[::-1]
     vals, vecs = vals[order], vecs[:, order]
     angle = np.degrees(np.arctan2(vecs[1, 0], vecs[0, 0]))
-    wh = 2 * np.sqrt(chi2.ppf(.95, 2) * vals)
+    wh = 2 * radius * np.sqrt(vals)
     ax.add_patch(Ellipse(mean, *wh, angle=angle, fill=False, **kwargs))
 
 
@@ -170,11 +172,11 @@ def main():
 
     fig, ax = plt.subplots(figsize=(WIDTH, 2.7), layout='constrained')
     ax.scatter(mi, ei, s=2, color='#888888', alpha=.25, edgecolors='none', rasterized=True)
-    for i, (mean, cov, color) in enumerate(zip(ref['gmm_means'], ref['gmm_covariances'], PALETTE)):
-        ellipse(ax, mean, cov, edgecolor=color, lw=1.2, label=f'Component {i+1}')
+    for i, (mean, cov, radius, color) in enumerate(zip(ref['gmm_means'], ref['gmm_covariances'], ref['stage1_thresholds'], PALETTE)):
+        ellipse(ax, mean, cov, radius=radius, edgecolor=color, lw=1.2, label=f'Component {i+1}')
         ax.scatter(*mean, color=color, marker='+', s=36, linewidths=1.2, zorder=4)
     ax.set(xlabel='Melanin index', ylabel='Erythema index', xlim=(0, 125), ylim=(0, 65))
-    ax.legend(loc='center left', bbox_to_anchor=(1, .5), title='95% component ellipses', title_fontsize=8)
+    ax.legend(loc='center left', bbox_to_anchor=(1, .5), title='Stage 1 regions\n(99th percentile)', title_fontsize=8)
     save(fig, 'gmm_mi_ei_confidence_regions')
 
     post = checkpoint['beta_curves']
