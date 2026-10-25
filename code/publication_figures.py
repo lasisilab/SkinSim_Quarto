@@ -12,7 +12,7 @@ import shutil
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / 'output/corrected_validation'
-MANUSCRIPT = ROOT.parent / 'SkinSpectra'
+MANUSCRIPT = ROOT.parent / 'SkinSpectra_manuscript'
 os.environ.setdefault('MPLCONFIGDIR', str(ROOT / '.runtime/matplotlib'))
 import matplotlib
 matplotlib.use('Agg')
@@ -87,7 +87,8 @@ def save(fig, name, manuscript=True):
     for ext in ['pdf', 'png']:
         path = folder / f'{name}.{ext}'
         fig.savefig(path, dpi=600, facecolor='white')
-        if manuscript and (MANUSCRIPT / 'figures').is_dir():
+        # The manuscript includes PDFs only; PNGs stay in figures/ for the website.
+        if manuscript and ext == 'pdf' and (MANUSCRIPT / 'figures').is_dir():
             shutil.copy2(path, MANUSCRIPT / 'figures' / path.name)
         manifest.append({'file': str(path.relative_to(ROOT)),
                          'sha256': hashlib.sha256(path.read_bytes()).hexdigest(),
@@ -123,10 +124,13 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--manuscript-only', action='store_true')
     args = parser.parse_args()
-    summary = json.loads((OUT / 'summary.json').read_text())
+    if not (MANUSCRIPT / 'figures').is_dir():
+        print(f'Warning: {MANUSCRIPT / "figures"} not found; manuscript figures will not be copied.')
+    summary =json.loads((OUT / 'summary.json').read_text())
     ref = dict(np.load(OUT / 'reference_state.npz'))
     checkpoint = dict(np.load(ROOT / 'data/bvcm_gibbs_validation_checkpoint.npz'))
-    wl, beta = ref['wavelengths'], ref['post_betas_mean']
+    # Section 3 figures use the training-split fit; post_betas_mean is the full-data validation reference.
+    wl, beta = ref['wavelengths'], ref['evaluation_post_betas_mean']
     workbook = ROOT / 'data/ISSA_17_Jan_2025_Yan_Lu.xlsx'
     assert hashlib.sha256(workbook.read_bytes()).hexdigest() == summary['issa_workbook_sha256']
     data = pd.read_excel(workbook, sheet_name='ISSA')
@@ -147,7 +151,8 @@ def main():
     old = 100 * old_full[:, np.searchsorted(380 + 2 * np.arange(310), wl)]
     a = evaluate(old, ref, summary['stage1_threshold'])
     b = evaluate(new, ref, summary['stage1_threshold'])
-    assert a['final'].sum() == 734 and b['final'].sum() == 733
+    # Counts must match the current (full-data) Stage 2 reference exported by bvcm.ipynb.
+    assert b['stage1'].sum() == summary['stage1_pass'] and b['final'].sum() == summary['passed_both']
     # Preserve the original ISSA/bvcm notebook palette and MI normalization.
     cmap = LinearSegmentedColormap.from_list('fitzpatrick', ['#fbf7ec', '#a15c33', '#42230c'])
     norm = Normalize(20, 150, clip=True)
